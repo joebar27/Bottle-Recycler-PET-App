@@ -1,15 +1,14 @@
-import 'package:bottlerecyclerapp/components/CustomFields.dart';
-import 'package:flutter/material.dart';
 import 'package:bottlerecyclerapp/components/CustomButton.dart';
+import 'package:flutter/material.dart';
 
-class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<AuthScreen> createState() => _AuthScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +20,7 @@ class _AuthScreenState extends State<AuthScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 30.0),
+            const SizedBox(height: 20.0),
             const Text(
               'Bienvenue sur\n',
               style: TextStyle(
@@ -47,7 +46,7 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
             const SizedBox(height: 20.0),
             const Text(
-              'Connectez-vous pour continuer',
+              'Inscrivez-vous pour continuer\nc\'est gratuit',
               style: TextStyle(
                 color: Color.fromARGB(255, 46, 176, 199),
                 fontSize: 16.0,
@@ -55,32 +54,34 @@ class _AuthScreenState extends State<AuthScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-            CustomTextField(labelText: 'E-mail'),
+            const TextField(
+              decoration: InputDecoration(
+                labelText: 'Nom Prénom',
+              ),
+            ),
+            const TextField(
+              decoration: InputDecoration(
+                labelText: 'E-mail',
+              ),
+            ),
             const SizedBox(height: 12.0),
-            CustomTextField(labelText: 'Mot de passe'),
-            const SizedBox(height: 50.0),
-            CustomButton.primary(
-              text: 'Se connecter',
+            const TextField(
+              decoration: InputDecoration(
+                labelText: 'Mot de passe',
+              ),
+            ),
+            const SizedBox(height: 12.0),
+            const TextField(
+              decoration: InputDecoration(
+                labelText: 'Confirmer le mot de passe',
+              ),
+            ),
+            const SizedBox(height: 30.0),
+            CustomButton.secondary(
+              text: 'S\'inscrire',
               onPressed: () {
                 Navigator.pushNamed(context, '/');
               },
-            ),
-            const Text(
-              'Vous n\'avez pas de compte ?',
-              textAlign: TextAlign.center,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, '/register');
-              },
-              child: Text(
-                "Creez un compte",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue,
-                ),
-              ),
             ),
           ],
         ),
