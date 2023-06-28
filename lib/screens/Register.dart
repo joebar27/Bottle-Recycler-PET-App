@@ -80,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             CustomButton.secondary(
               text: 'S\'inscrire',
               onPressed: () {
-                Navigator.pushNamed(context, '/');
+                Navigator.pushNamed(context, '/auth');
               },
             ),
           ],

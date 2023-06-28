@@ -1,5 +1,6 @@
 import 'package:bottlerecyclerapp/screens/Auth.dart';
 import 'package:bottlerecyclerapp/screens/Register.dart';
+import 'package:bottlerecyclerapp/screens/Home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,11 +15,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Bottle Recycler App',
-      // home: AuthScreen(),
-      initialRoute: '/',
+      initialRoute: '/auth',
       routes: {
-        '/': (context) => AuthScreen(),
+        '/home': (context) => HomeScreen(),
         '/register': (context) => RegisterScreen(),
+        '/auth': (context) => AuthScreen(),
       },
     );
   }

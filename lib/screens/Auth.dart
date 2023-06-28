@@ -62,7 +62,7 @@ class _AuthScreenState extends State<AuthScreen> {
             CustomButton.primary(
               text: 'Se connecter',
               onPressed: () {
-                Navigator.pushNamed(context, '/');
+                Navigator.pushNamed(context, '/home');
               },
             ),
             const Text(
