@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
         labelText: labelText,
         filled: true,
         fillColor: Color.fromARGB(51, 75, 194, 80),

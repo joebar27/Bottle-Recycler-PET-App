@@ -43,7 +43,7 @@ class _AuthScreenState extends State<AuthScreen> {
             const SizedBox(height: 20.0),
             Image.asset(
               'assets/images/bouteille_bobine_pet.png', // Remplacez "assets/logo.png" par le chemin de votre image
-              height: 150.0,
+              height: MediaQuery.of(context).size.height * 0.25,
             ),
             const SizedBox(height: 20.0),
             const Text(
@@ -55,6 +55,7 @@ class _AuthScreenState extends State<AuthScreen> {
               ),
               textAlign: TextAlign.center,
             ),
+            const SizedBox(height: 20.0),
             CustomTextField(labelText: 'E-mail'),
             const SizedBox(height: 12.0),
             CustomTextField(labelText: 'Mot de passe'),
