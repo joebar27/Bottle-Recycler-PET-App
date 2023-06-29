@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextFormField extends StatelessWidget {
   final String labelText;
   final bool obscureText;
 
-  const CustomTextField({required this.labelText, required this.obscureText});
+  const CustomTextFormField({required this.labelText, required this.obscureText});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:bottlerecyclerapp/components/CustomDropdown.dart';
 import 'package:bottlerecyclerapp/components/CustomFields.dart';
 import 'package:bottlerecyclerapp/components/CustomButton.dart';
-import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -48,16 +48,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CustomTextField(labelText: 'Type de bouteille', obscureText: false,),
+                    CustomTextFormField(labelText: 'Type de bouteille', obscureText: false,),
                     const SizedBox(height: 12.0),
-                    CustomTextField(labelText: 'Largeur de bande en mm', obscureText: false,),
+                    CustomTextFormField(labelText: 'Largeur de bande en mm', obscureText: false,),
                     const SizedBox(height: 12.0),
-                    CustomTextField(labelText: 'Vitesse d\'extrusion en mm/s', obscureText: false,),
+                    CustomTextFormField(labelText: 'Vitesse d\'extrusion en mm/s', obscureText: false,),
                     const SizedBox(height: 12.0),
-                    CustomTextField(
+                    CustomTextFormField(
                         labelText: 'Température d\'extrusion en \°C', obscureText: false,),
                     const SizedBox(height: 12.0),
-                    CustomTextField(labelText: 'Ventilation en %', obscureText: false,),
+                    CustomTextFormField(labelText: 'Ventilation en %', obscureText: false,),
                     const SizedBox(height: 12.0),
                     const SizedBox(height: 20.0),
                     CustomButton.primary(

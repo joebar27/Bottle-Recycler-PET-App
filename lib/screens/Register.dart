@@ -1,6 +1,6 @@
-import 'package:bottlerecyclerapp/components/CustomButton.dart';
-import 'package:bottlerecyclerapp/components/CustomFields.dart';
 import 'package:flutter/material.dart';
+import 'package:bottlerecyclerapp/components/CustomButton.dart';
+import 'package:bottlerecyclerapp/components/CustomFormFields.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -13,9 +13,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Connexion'),
-      // ),
+      appBar: AppBar(
+          title: const Text('Créer un compte'),
+          backgroundColor: Color.fromARGB(255, 71, 144, 14)),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -31,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-            const Text(
+              const Text(
               'Bottle Recycler App',
               style: TextStyle(
                 color: Colors.green,
@@ -40,6 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               textAlign: TextAlign.center,
             ),
+            
             const SizedBox(height: 20.0),
             Image.asset(
               'assets/images/bouteille_bobine_pet.png', // Remplacez "assets/logo.png" par le chemin de votre image
@@ -56,27 +57,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20.0),
-            Form(child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomTextField(labelText: 'Nom', obscureText: false,),
-                const SizedBox(height: 12.0),
-                CustomTextField(labelText: 'Prénom', obscureText: false,),
-                const SizedBox(height: 12.0),
-                CustomTextField(labelText: 'E-mail', obscureText: false,),
-                const SizedBox(height: 12.0),
-                CustomTextField(labelText: 'Mot de passe', obscureText: true,),
-                const SizedBox(height: 12.0),
-                CustomTextField(labelText: 'Confirmer le mot de passe', obscureText: true,),
-                const SizedBox(height: 30.0),
-                CustomButton.secondary(
-                  text: 'S\'inscrire',
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/auth');
-                  },
-                ),
-              ],
-            ),),
+            Form(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomFormField(
+                    labelText: 'Nom',
+                    obscureText: false,
+                  ),
+                  const SizedBox(height: 12.0),
+                  CustomFormField(
+                    labelText: 'Prénom',
+                    obscureText: false,
+                  ),
+                  const SizedBox(height: 12.0),
+                  CustomFormField(
+                    labelText: 'E-mail',
+                    obscureText: false,
+                  ),
+                  const SizedBox(height: 12.0),
+                  CustomFormField(
+                    labelText: 'Mot de passe',
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 12.0),
+                  CustomFormField(
+                    labelText: 'Confirmer le mot de passe',
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 30.0),
+                  CustomButton.secondary(
+                    text: 'S\'inscrire',
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/auth');
+                    },
+                  ),
+                ],
+              ),
+            ),
             // CustomTextField(
             //   labelText: 'Nom Prénom',
             // ),
