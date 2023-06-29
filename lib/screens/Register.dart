@@ -1,4 +1,5 @@
 import 'package:bottlerecyclerapp/components/CustomButton.dart';
+import 'package:bottlerecyclerapp/components/CustomFields.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       // appBar: AppBar(
       //   title: const Text('Connexion'),
       // ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -54,35 +55,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'Nom Prénom',
-              ),
-            ),
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'E-mail',
-              ),
-            ),
-            const SizedBox(height: 12.0),
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'Mot de passe',
-              ),
-            ),
-            const SizedBox(height: 12.0),
-            const TextField(
-              decoration: InputDecoration(
-                labelText: 'Confirmer le mot de passe',
-              ),
-            ),
-            const SizedBox(height: 30.0),
-            CustomButton.secondary(
-              text: 'S\'inscrire',
-              onPressed: () {
-                Navigator.pushNamed(context, '/auth');
-              },
-            ),
+            const SizedBox(height: 20.0),
+            Form(child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CustomTextField(labelText: 'Nom', obscureText: false,),
+                const SizedBox(height: 12.0),
+                CustomTextField(labelText: 'Prénom', obscureText: false,),
+                const SizedBox(height: 12.0),
+                CustomTextField(labelText: 'E-mail', obscureText: false,),
+                const SizedBox(height: 12.0),
+                CustomTextField(labelText: 'Mot de passe', obscureText: true,),
+                const SizedBox(height: 12.0),
+                CustomTextField(labelText: 'Confirmer le mot de passe', obscureText: true,),
+                const SizedBox(height: 30.0),
+                CustomButton.secondary(
+                  text: 'S\'inscrire',
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/auth');
+                  },
+                ),
+              ],
+            ),),
+            // CustomTextField(
+            //   labelText: 'Nom Prénom',
+            // ),
+            // const SizedBox(height: 12.0),
+            // CustomTextField(
+            //   labelText: 'E-mail',
+            // ),
+            // const SizedBox(height: 12.0),
+            // CustomTextField(
+            //   labelText: 'Mot de passe',
+            // ),
+            // const SizedBox(height: 12.0),
+            // CustomTextField(
+            //   labelText: 'Confirmer le mot de passe',
+            // ),
+            // const SizedBox(height: 30.0),
+            // CustomButton.secondary(
+            //   text: 'S\'inscrire',
+            //   onPressed: () {
+            //     Navigator.pushNamed(context, '/auth');
+            //   },
+            // ),
           ],
         ),
       ),

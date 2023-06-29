@@ -27,6 +27,8 @@ class _CustomDropdownState extends State<CustomDropdown> {
   @override
 Widget build(BuildContext context) {
   return Container(
+    width: MediaQuery.of(context).size.width * 0.35,
+    height: 30,
     child: DropdownButtonFormField<String>(
       value: _selectedOption,
       onChanged: (String? newValue) {
@@ -41,7 +43,7 @@ Widget build(BuildContext context) {
       decoration: InputDecoration(
         filled: true,
         fillColor: Color.fromARGB(51, 75, 194, 80),
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(

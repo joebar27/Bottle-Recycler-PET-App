@@ -16,8 +16,8 @@ class _AuthScreenState extends State<AuthScreen> {
       // appBar: AppBar(
       //   title: const Text('Connexion'),
       // ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -56,15 +56,27 @@ class _AuthScreenState extends State<AuthScreen> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20.0),
-            CustomTextField(labelText: 'E-mail'),
-            const SizedBox(height: 12.0),
-            CustomTextField(labelText: 'Mot de passe'),
-            const SizedBox(height: 50.0),
-            CustomButton.primary(
-              text: 'Se connecter',
-              onPressed: () {
-                Navigator.pushNamed(context, '/home');
-              },
+            Form(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomTextField(labelText: 'E-mail', obscureText: false,),
+                  const SizedBox(height: 12.0),
+                  CustomTextField(labelText: 'Mot de passe', obscureText: true),
+                  const SizedBox(height: 50.0),
+                  CustomButton.primary(
+                    text: 'Se connecter',
+                    onPressed: () {
+                      // if (_formKey.currentState?.validate() == true) {
+                      //   _formKey.currentState?.save();
+                      // Effectuer la validation et la connexion ici
+                      // Utilisez les valeurs _email et _password pour la connexion
+              
+                      Navigator.pushNamed(context, '/home');
+                    },
+                  ),
+                ],
+              ),
             ),
             const Text(
               'Vous n\'avez pas de compte ?',

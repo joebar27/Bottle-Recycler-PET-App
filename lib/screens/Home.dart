@@ -17,58 +17,62 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
           title: const Text('Paramètrage d\'extrusion'),
           backgroundColor: Color.fromARGB(255, 71, 144, 14)),
-      body: Padding(
-          padding: EdgeInsets.all(30.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            const SizedBox(height: 20.0),
-            const Text(
-              'Veuillez sélectionner le paramétrages\ndu recycleur PET',
-              style: TextStyle(
-                color: Color.fromARGB(255, 12, 94, 218),
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Text(
+                'Veuillez sélectionner le paramétrages\ndu recycleur PET',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 12, 94, 218),
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20.0),
-            Container(
-              height: 40.0,
-              padding: EdgeInsets.fromLTRB(
-                  0, 0, MediaQuery.of(context).size.width * 0.4, 0),
-              child: CustomDropdown(
-                options: ['Novice', 'Expert'],
-                selectedOption: 'Novice',
-                onChanged: (String? newValue) {
-                  // Traiter la nouvelle option sélectionnée ici
-                },
-              ),
-            ),
-            Container(
-              child: Column(
-                children: [
-                const SizedBox(height: 25.0),
-                CustomTextField(labelText: 'Type de bouteille'),
-                const SizedBox(height: 12.0),
-                CustomTextField(labelText: 'Largeur de bande en mm'),
-                const SizedBox(height: 12.0),
-                CustomTextField(labelText: 'Vitesse d\'extrusion en mm/s'),
-                const SizedBox(height: 12.0),
-                CustomTextField(labelText: 'Température d\'extrusion en \°C'),
-                const SizedBox(height: 12.0),
-                CustomTextField(labelText: 'Ventilation en %'),
-                const SizedBox(height: 12.0),
+              const SizedBox(height: 40.0),
+              Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                CustomDropdown(
+                  options: ['Novice', 'Expert'],
+                  selectedOption: 'Novice',
+                  onChanged: (String? newValue) {
+                    if (newValue != null) print(newValue);
+                    // Traiter la nouvelle option sélectionnée ici
+                  },
+                ),
               ]),
-            ),
-            const SizedBox(height: 20.0),
-            CustomButton.primary(
-              text: 'Lancer l\'extrusion',
-              onPressed: () {
-                Navigator.pushNamed(context, '/home');
-              },
-            ),
-          ]),
+              const SizedBox(height: 20.0),
+              Form(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CustomTextField(labelText: 'Type de bouteille', obscureText: false,),
+                    const SizedBox(height: 12.0),
+                    CustomTextField(labelText: 'Largeur de bande en mm', obscureText: false,),
+                    const SizedBox(height: 12.0),
+                    CustomTextField(labelText: 'Vitesse d\'extrusion en mm/s', obscureText: false,),
+                    const SizedBox(height: 12.0),
+                    CustomTextField(
+                        labelText: 'Température d\'extrusion en \°C', obscureText: false,),
+                    const SizedBox(height: 12.0),
+                    CustomTextField(labelText: 'Ventilation en %', obscureText: false,),
+                    const SizedBox(height: 12.0),
+                    const SizedBox(height: 20.0),
+                    CustomButton.primary(
+                      text: 'Lancer l\'extrusion',
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/home');
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
+        ),
+      ),
     );
   }
 }

@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   final String labelText;
+  final bool obscureText;
 
-  const CustomTextField({required this.labelText});
+  const CustomTextField({required this.labelText, required this.obscureText});
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      obscureText: obscureText,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
         labelText: labelText,
