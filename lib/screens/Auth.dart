@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:bottlerecyclerapp/components/CustomButton.dart';
+import 'package:bottlerecyclerapp/data/apiClient/api_client.dart' as api;
 
-import '../User.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -12,33 +10,15 @@ class AuthScreen extends StatefulWidget {
   State<AuthScreen> createState() => _AuthScreenState();
 }
 
-Future<List<User>> fetchUsers() async {
-  final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/users'));
-  if (response.statusCode == 200) {
-    final List<dynamic> data = jsonDecode(response.body);
-    final List<User> users = data.map((json) => User.fromJson(json)).toList();
-    return users;
-    // return data.map((json) => Posts.fromJson(json)).toList();
-  } else {
-    throw Exception('Failed to load comments');
-  }
-}
-
 class _AuthScreenState extends State<AuthScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final RegExp _emailRegExp =
       RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$');
 
-  late Future<List<User>> futureUsers;
-  @override
-  void initState() {
-    super.initState();
-    futureUsers = fetchUsers();
-  }
-
   bool _isSecret = true;
   String _email = '';
   String _mdp = '';
+  String data = '';
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +49,7 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
             const SizedBox(height: 20.0),
             Image.asset(
-              'assets/images/bouteille_bobine_pet.png', // Remplacez "assets/logo.png" par le chemin de votre image
+              'assets/images/bouteille_bobine_pet.png',
               height: MediaQuery.of(context).size.height * 0.25,
             ),
             const SizedBox(height: 20.0),
@@ -121,7 +101,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     onChanged: (value) => setState(() => _mdp = value),
                     validator: (value) {
                       if (value == null || value.isEmpty || value.length < 6) {
-                        return 'Veuillez saisir un mot de passe \nde 6 caractères au moins';
+                        return 'Veuillez saisir un mot de passe\nde 6 caractères au moins';
                       }
                       return null;
                     },
@@ -154,23 +134,58 @@ class _AuthScreenState extends State<AuthScreen> {
                   const SizedBox(height: 50.0),
                   CustomButton.primary(
                     text: 'Se connecter',
-                    onPressed: () {
-                      fetchUsers().then((users) {
-                        if (users.isNotEmpty) {
-                          final User user = users[0];
-                          print(
-                              'Utilisateur : ${user.name}, Email : ${user.email}');
-                        } else {
-                          print('Aucun utilisateur trouvé');
+                    // onPressed: () {
+                    // if (_formKey.currentState?.validate() == true) {
+                    // _formKey.currentState?.save();
+                    // fetchUsers().then((_email, _mdp) {
+                    //   if (users.isNotEmpty) {
+                    //     final User user = users[0];
+                    //     print(
+                    //         'Utilisateur : ${user.name}, Email : ${user.email}');
+                    //   } else {
+                    //     print('Aucun utilisateur trouvé');
+                    //   }
+                    // }).catchError((error) {
+                    //   print(
+                    //       'Erreur lors de la récupération des utilisateurs : $error');
+                    // });
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        var email = _email;
+                        var password = _mdp;
+
+                        if (!email.isEmpty && !password.isEmpty) {
+                          var data = await api.userLogin(email, password);
+                          print('After API call, data: $data');
+                          if (data.containsKey('remember_token')) {
+                            print('Token received, writing to storage');
+                          }
+                          // await storage.write(
+                          // key: 'auth_token',
+                          // value: data['accessToken']);
+                          // print('After writing to storage');
+
+                          // Show success snackbar
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          // SnackBar(
+                          // content: Text('Connexion réussie!'),
+                          // backgroundColor: Colors.green,
+                          // ),
+                          // );
+
+                          // print('Navigating to HomeContainerScreen');
+                          // Navigator.pushNamed(
+                          // HomeScreen());
+                          // print('Navigation should have occurred');
+                          // } else {
+                          // Handle incorrect credentials
+                          // print('No token in response data');
+                          // } catch (e) {
+                          // print('Error during login process: $e');
+                          // }
+                          Navigator.pushNamed(context, '/home');
+                          // print('email: ' + _email + ' mdp:' + _mdp);
                         }
-                      }).catchError((error) {
-                        print(
-                            'Erreur lors de la récupération des utilisateurs : $error');
-                      });
-                      if (_formKey.currentState?.validate() == true) {
-                        _formKey.currentState?.save();
-                        // Navigator.pushNamed(context, '/home');
-                        print('email: ' + _email + ' mdp:' + _mdp);
                       }
                     },
                   ),
@@ -193,18 +208,6 @@ class _AuthScreenState extends State<AuthScreen> {
                   color: Colors.blue,
                 ),
               ),
-            ),
-            FutureBuilder<List<User>>(
-              future: futureUsers,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-                if (snapshot.hasData) {
-                  return Text(snapshot.data.toString());
-                }
-                return CircularProgressIndicator();
-              },
             ),
           ],
         ),
