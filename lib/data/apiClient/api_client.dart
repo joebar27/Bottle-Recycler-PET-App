@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io'; // Import this for SocketException
 
 import 'package:http/http.dart' as http;
-import 'package:bottlerecyclerapp/constants/utils.dart';
+import 'package:bottlerecyclerapp/core/utils/utils.dart';
 
 Future<Map<String, dynamic>> userLogin(String email, String password) async {
   String url = Utils.baseUrl + "users/"+ email;

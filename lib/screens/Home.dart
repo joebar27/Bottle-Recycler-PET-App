@@ -1,3 +1,4 @@
+import 'package:bottlerecyclerapp/core/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:bottlerecyclerapp/components/CustomDropdown.dart';
 import 'package:bottlerecyclerapp/components/CustomFields.dart';
@@ -63,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     CustomButton.primary(
                       text: 'Lancer l\'extrusion',
                       onPressed: () {
-                        Navigator.pushNamed(context, '/home');
+                        Navigator.pushNamed(context, AppRoutes.tutoDebutantScreen);
                       },
                     ),
                   ],

@@ -1,3 +1,4 @@
+import 'package:bottlerecyclerapp/core/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:bottlerecyclerapp/components/CustomButton.dart';
 import 'package:bottlerecyclerapp/data/apiClient/api_client.dart' as api;
@@ -48,10 +49,19 @@ class _AuthScreenState extends State<AuthScreen> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20.0),
-            Image.asset(
-              'assets/images/bouteille_bobine_pet.png',
-              height: MediaQuery.of(context).size.height * 0.25,
-            ),
+            // Image.asset(
+            //   'assets/images/img_image1.png',
+            //   height: MediaQuery.of(context).size.height * 0.25,
+            // ),
+            CustomImageView(
+                              imagePath: ImageConstant.imgImage1,
+                              height: getSize(
+                                MediaQuery.of(context).size.height * 0.25,
+                              ),
+                              // width: getSize(
+                              //   55,
+                              // ),
+                            ),
             const SizedBox(height: 20.0),
             const Text(
               'Connectez-vous pour continuer',
@@ -156,7 +166,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
                         if (!email.isEmpty && !password.isEmpty) {
                           var data = await api.userLogin(email, password);
-                          print('After API call, data: $data');
+                          print('API call, data: $data');
                           if (data.containsKey('remember_token')) {
                             print('Token received, writing to storage');
                           }
@@ -183,8 +193,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           // } catch (e) {
                           // print('Error during login process: $e');
                           // }
-                          Navigator.pushNamed(context, '/home');
-                          // print('email: ' + _email + ' mdp:' + _mdp);
+                          Navigator.pushNamed(context, AppRoutes.homeScreen);
                         }
                       }
                     },
@@ -198,7 +207,7 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/register');
+                Navigator.pushNamed(context, AppRoutes.registerScreen);
               },
               child: Text(
                 "Creez un compte",
