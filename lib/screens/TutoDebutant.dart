@@ -11,7 +11,7 @@ class TutoDebutantScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: ColorConstant.whiteA700,
+        backgroundColor: ColorConstant.backgroundApp,
         body: SizedBox(
           width: double.maxFinite,
           child: Column(
@@ -107,7 +107,7 @@ class TutoDebutantScreen extends StatelessWidget {
                                 "PET bottle recycler",
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.left,
-                                style: AppStyle.txtInterRegular24,
+                                style: AppStyle.txtRobotoRegular24,
                               ),
                             ),
                           ],

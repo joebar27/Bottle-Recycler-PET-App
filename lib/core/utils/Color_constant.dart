@@ -26,6 +26,8 @@ class ColorConstant {
 
   static Color lightGreen800 = fromHex('#47900d');
 
+  static Color backgroundApp = fromHex('#bbe6ff');
+
   static Color redA70048 = fromHex('#48ff0000');
 
   static Color redA700Ad = fromHex('#adff0000');

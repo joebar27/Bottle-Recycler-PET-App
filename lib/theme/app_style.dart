@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:bottlerecyclerapp/core/app_export.dart';
 
 class AppStyle {
-  static TextStyle txtInterRegular14Black900 = TextStyle(
+  static TextStyle txtRobotoRegular14Black900 = TextStyle(
     color: ColorConstant.black900,
     fontSize: getFontSize(
       14,
     ),
-    fontFamily: 'Inter',
+    fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
   );
 
@@ -38,12 +38,12 @@ class AppStyle {
     fontWeight: FontWeight.w600,
   );
 
-  static TextStyle txtInterRegular14WhiteA700 = TextStyle(
+  static TextStyle txtRobotoRegular14WhiteA700 = TextStyle(
     color: ColorConstant.whiteA700,
     fontSize: getFontSize(
       14,
     ),
-    fontFamily: 'Inter',
+    fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
   );
 
@@ -65,12 +65,12 @@ class AppStyle {
     fontWeight: FontWeight.w600,
   );
 
-  static TextStyle txtInterRegular24 = TextStyle(
+  static TextStyle txtRobotoRegular24 = TextStyle(
     color: ColorConstant.whiteA700,
     fontSize: getFontSize(
       24,
     ),
-    fontFamily: 'Inter',
+    fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
   );
 
@@ -92,12 +92,12 @@ class AppStyle {
     fontWeight: FontWeight.w400,
   );
 
-  static TextStyle txtInterRegular12Lightgreen800 = TextStyle(
+  static TextStyle txtRobotoRegular12Lightgreen800 = TextStyle(
     color: ColorConstant.lightGreen800,
     fontSize: getFontSize(
       12,
     ),
-    fontFamily: 'Inter',
+    fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
   );
 
@@ -110,12 +110,12 @@ class AppStyle {
     fontWeight: FontWeight.w700,
   );
 
-  static TextStyle txtInterRegular12RedA700ad = TextStyle(
+  static TextStyle txtRobotoRegular12RedA700ad = TextStyle(
     color: ColorConstant.redA700Ad,
     fontSize: getFontSize(
       12,
     ),
-    fontFamily: 'Inter',
+    fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
   );
 
@@ -146,12 +146,12 @@ class AppStyle {
     fontWeight: FontWeight.w700,
   );
 
-  static TextStyle txtInterRegular14Lightgreen800 = TextStyle(
+  static TextStyle txtRobotoRegular14Lightgreen800 = TextStyle(
     color: ColorConstant.lightGreen800,
     fontSize: getFontSize(
       14,
     ),
-    fontFamily: 'Inter',
+    fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
   );
 
@@ -173,12 +173,12 @@ class AppStyle {
     fontWeight: FontWeight.w800,
   );
 
-  static TextStyle txtInterRegular12 = TextStyle(
+  static TextStyle txtRobotoRegular12 = TextStyle(
     color: ColorConstant.redA70001,
     fontSize: getFontSize(
       12,
     ),
-    fontFamily: 'Inter',
+    fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
   );
 
@@ -200,12 +200,12 @@ class AppStyle {
     fontWeight: FontWeight.w400,
   );
 
-  static TextStyle txtInterRegular14 = TextStyle(
+  static TextStyle txtRobotoRegular14 = TextStyle(
     color: ColorConstant.black9004c,
     fontSize: getFontSize(
       14,
     ),
-    fontFamily: 'Inter',
+    fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
   );
 

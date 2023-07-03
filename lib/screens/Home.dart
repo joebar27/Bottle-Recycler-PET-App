@@ -15,6 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConstant.backgroundApp,
       appBar: AppBar(
           title: const Text('Paramètrage d\'extrusion'),
           backgroundColor: Color.fromARGB(255, 71, 144, 14)),

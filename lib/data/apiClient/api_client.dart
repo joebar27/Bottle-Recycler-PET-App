@@ -4,7 +4,7 @@ import 'dart:io'; // Import this for SocketException
 import 'package:http/http.dart' as http;
 import 'package:bottlerecyclerapp/core/utils/utils.dart';
 
-Future<Map<String, dynamic>> userLogin(String email, String password) async {
+Future<Map<String, dynamic>> userData(String email) async {
   String url = Utils.baseUrl + "users/"+ email;
   print('URL for request: $url');
   try {

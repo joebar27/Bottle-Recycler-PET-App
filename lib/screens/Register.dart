@@ -1,3 +1,4 @@
+import 'package:bottlerecyclerapp/core/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:bottlerecyclerapp/components/CustomButton.dart';
 import 'package:bottlerecyclerapp/components/CustomFormFields.dart';
@@ -13,6 +14,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConstant.backgroundApp,
       appBar: AppBar(
           title: const Text('Créer un compte'),
           backgroundColor: Color.fromARGB(255, 71, 144, 14)),
@@ -42,9 +44,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             
             const SizedBox(height: 20.0),
-            Image.asset(
-              'assets/images/bouteille_bobine_pet.png', // Remplacez "assets/logo.png" par le chemin de votre image
-              height: 150.0,
+            CustomImageView(
+              imagePath: ImageConstant.imgImage1,
+              height: getSize(
+                150,
+              ),
+              fit: BoxFit.contain,
             ),
             const SizedBox(height: 20.0),
             const Text(
@@ -89,7 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   CustomButton.secondary(
                     text: 'S\'inscrire',
                     onPressed: () {
-                      Navigator.pushNamed(context, '/auth');
+                      Navigator.pushNamed(context, '/TutoDebutant');
                     },
                   ),
                 ],
