@@ -1,7 +1,7 @@
 import 'package:bottlerecyclerapp/core/app_export.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-// import 'package:bottlerecyclerapp/data/local_storage/secure_storage.dart';
+import 'package:bottlerecyclerapp/data/local_storage/secure_storage.dart';
 // import 'package:bottlerecyclerapp/data/apiClient/api_client.dart' as api;
 
 class ProfilUserScreen extends StatefulWidget {
@@ -12,9 +12,23 @@ class ProfilUserScreen extends StatefulWidget {
 }
 
 class _ProfilUserScreenState extends State<ProfilUserScreen> {
-  // final storage = FlutterSecureStorage();
-  String email = storage.read(key:'email') as String;
-  String value = await storage.read(key: 'email') ?? 'No data found';
+  
+  final secureStorage = SecureStorage();
+  String? email;
+
+  @override
+  void initState() {
+    super.initState();
+    getEmailFromSecureStorage();
+  }
+
+  void getEmailFromSecureStorage() async {
+    email = await secureStorage.readSecureData('email') ?? 'No data found';
+    setState(() {}); // Update the state to reflect the email value
+  }
+  // final secureStorage = SecureStorage();
+  // Object email = SecureStorage.readSecureData('email') ?? 'No data found';
+  // String value = await SecureStorage.readSecureData(key: 'email') ?? 'No data found';
   String? password;
 
   // @override
@@ -163,18 +177,7 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                         ),
                       ),
                       TextSpan(
-                        text: " ",
-                        style: TextStyle(
-                          color: ColorConstant.black900,
-                          fontSize: getFontSize(
-                            18,
-                          ),
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      TextSpan(
-                        text: '$email',
+                        text: ' $email ',
                         style: TextStyle(
                           color: ColorConstant.redA700Ad,
                           fontSize: getFontSize(

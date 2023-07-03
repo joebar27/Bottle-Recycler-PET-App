@@ -1,28 +1,24 @@
 // ignore_for_file: prefer_const_constructors
-import 'dart:html';
-
 import 'package:bottlerecyclerapp/core/app_export.dart';
 import 'package:bottlerecyclerapp/data/local_storage/secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:bottlerecyclerapp/components/CustomButton.dart';
 import 'package:bottlerecyclerapp/data/apiClient/api_client.dart' as api;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
-
 
   @override
   State<AuthScreen> createState() => _AuthScreenState();
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _mdpController = TextEditingController();
-  final storage = FlutterSecureStorage();
-  
+  // final storage = FlutterSecureStorage();
+
   final RegExp _emailRegExp =
       RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$');
 
@@ -34,31 +30,27 @@ class _AuthScreenState extends State<AuthScreen> {
     return Scaffold(
       backgroundColor: ColorConstant.backgroundApp,
       body: SingleChildScrollView(
-        
         padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
         child: Column(
-          
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 30.0),
             const Text(
               'Bienvenue sur\n',
               style: TextStyle(
-                color: Colors.green,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic
-              ),
+                  color: Colors.green,
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic),
               textAlign: TextAlign.center,
             ),
             const Text(
               'Bottle Recycler App',
               style: TextStyle(
-                color: Colors.green,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic
-              ),
+                  color: Colors.green,
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20.0),
@@ -163,35 +155,11 @@ class _AuthScreenState extends State<AuthScreen> {
 
                         if (!email.isEmpty && !password.isEmpty) {
                           var userData = await api.userData(email);
-                          await storage.write(key:'email', value: userData[0]);
-                          // SecureStorage().writeSecureData('password', password);
+                          print('userData:' + userData['email']);
 
-                          // print('after API call, data: $data');
-                          // if (userData.containsKey('remember_token')) {
-                          //   print('Token received, writing to storage');
-                          //   await storage.write(
-                          //       key: 'remember_token',
-                          //       value: data['remember_token']);
-                          //   print('After writing to storage');
-                          // }
-                          // Show success snackbar
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          // SnackBar(
-                          // content: Text('Connexion réussie!'),
-                          // backgroundColor: Colors.green,
-                          // ),
-                          // );
-
-                          // print('Navigating to HomeContainerScreen');
-                          // Navigator.pushNamed(
-                          // HomeScreen());
-                          // print('Navigation should have occurred');
-                          // } else {
-                          // Handle incorrect credentials
-                          // print('No token in response data');
-                          // } catch (e) {
-                          // print('Error during login process: $e');
-                          // }
+                          var secureStorage = SecureStorage();
+                          await secureStorage.writeSecureData(
+                              'email', userData['email']);
                           Navigator.pushNamed(
                               context, AppRoutes.profilUserScreen);
                         }
