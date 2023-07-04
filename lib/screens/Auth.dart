@@ -22,24 +22,25 @@ class _AuthScreenState extends State<AuthScreen> {
 
   final RegExp _emailRegExp =
       RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$');
+  final secureStorage = SecureStorage();
 
   bool _isSecret = true;
   String data = '';
 
-@override
+  @override
   void initState() {
     super.initState();
     userIsConnect();
   }
 
   void userIsConnect() async {
-    var secureStorage = SecureStorage();
-    var userData = await secureStorage.readSecureData('userData');
-    if (userData != null) {
+    // print(await secureStorage.readSecureData('userData'));
+    // await secureStorage.deleteSecureData('userData');
+    if (await secureStorage.readSecureData('userData') != '') {
       Navigator.pushNamed(context, AppRoutes.profilUserScreen);
     }
   }
-  
+
   String hashPassword(String password) {
     // Convertir le mot de passe en bytes
     var bytes = utf8.encode(password);
@@ -180,13 +181,13 @@ class _AuthScreenState extends State<AuthScreen> {
                         if (!email.isEmpty && !password.isEmpty) {
                           var userData = await api.userLogin(email, password);
                           if (userData != null) {
-                            print('userData: $userData');
                             // var secureStorage = SecureStorage();
                             // await secureStorage.writeSecureData('userData',userData);
                           }
 
                           var secureStorage = SecureStorage();
-                          await secureStorage.writeSecureData('userData', userData);
+                          await secureStorage.writeSecureData(
+                              'userData', userData);
 
                           Navigator.pushNamed(
                               context, AppRoutes.profilUserScreen);

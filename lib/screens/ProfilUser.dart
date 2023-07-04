@@ -28,7 +28,11 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
   Future<Map<String, dynamic>> getUserDataFromSecureStorage() async {
     jsonStringData =
         await secureStorage.readSecureData('userData') ?? 'No data found';
-    userData = jsonDecode(jsonStringData);
+    if (jsonStringData != 'No data found') {
+      // Navigator.pushNamed(context, AppRoutes.authScreen);
+      userData = jsonDecode(jsonStringData);
+    }
+    // userData = jsonDecode(jsonStringData);
     setState(() {
       this.userData = userData;
     });
@@ -47,140 +51,155 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConstant.backgroundApp,
+        appBar: AppBar(
+          actions: [
+            IconButton(
+              onPressed: () {
+                secureStorage.deleteSecureData('userData');
+                Navigator.pushNamed(context, AppRoutes.authScreen);
+              },
+              icon: Icon(Icons.login),
+            ),
+          ],
+          centerTitle: true,
+          title: Text("Profile", style: AppStyle.txtRobotoRegular24),
+          backgroundColor: Color.fromARGB(255, 71, 144, 14),
+        ),
         body: SizedBox(
           width: double.maxFinite,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                width: double.maxFinite,
-                padding: getPadding(
-                  left: 10,
-                  top: 11,
-                  right: 10,
-                  bottom: 11,
-                ),
-                decoration: AppDecoration.fillLightgreen800,
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: getPadding(
-                        top: 5,
-                        bottom: 5,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: getVerticalSize(
-                              5,
-                            ),
-                            width: getHorizontalSize(
-                              30,
-                            ),
-                            decoration: BoxDecoration(
-                              color: ColorConstant.whiteA700,
-                              borderRadius: BorderRadius.circular(
-                                getHorizontalSize(
-                                  2,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: getVerticalSize(
-                              5,
-                            ),
-                            width: getHorizontalSize(
-                              30,
-                            ),
-                            margin: getMargin(
-                              top: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: ColorConstant.whiteA700,
-                              borderRadius: BorderRadius.circular(
-                                getHorizontalSize(
-                                  2,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: getVerticalSize(
-                              5,
-                            ),
-                            width: getHorizontalSize(
-                              30,
-                            ),
-                            margin: getMargin(
-                              top: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: ColorConstant.whiteA700,
-                              borderRadius: BorderRadius.circular(
-                                getHorizontalSize(
-                                  2,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: getPadding(
-                        left: 32,
-                        top: 4,
-                      ),
-                      child: Text(
-                        "PET bottle recycler",
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
-                        style: AppStyle.txtRobotoRegular24,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+                // width: double.maxFinite,
+                // padding: getPadding(
+                //   left: 10,
+                //   top: 11,
+                //   right: 10,
+                //   bottom: 11,
+                // ),
+                // decoration: AppDecoration.fillLightgreen800,
+                // child: Row(
+                //   children: [
+                    // Padding(
+                    //   padding: getPadding(
+                    //     top: 5,
+                    //     bottom: 5,
+                    //   ),
+                      // child: Column(
+                      //   mainAxisAlignment: MainAxisAlignment.start,
+                      //   children: [
+                      //     Container(
+                      //       height: getVerticalSize(
+                      //         5,
+                      //       ),
+                      //       width: getHorizontalSize(
+                      //         30,
+                      //       ),
+                      //       decoration: BoxDecoration(
+                      //         color: ColorConstant.whiteA700,
+                      //         borderRadius: BorderRadius.circular(
+                      //           getHorizontalSize(
+                      //             2,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                          // Container(
+                          //   height: getVerticalSize(
+                          //     5,
+                          //   ),
+                          //   width: getHorizontalSize(
+                          //     30,
+                          //   ),
+                          //   margin: getMargin(
+                          //     top: 4,
+                          //   ),
+                          //   decoration: BoxDecoration(
+                          //     color: ColorConstant.whiteA700,
+                          //     borderRadius: BorderRadius.circular(
+                          //       getHorizontalSize(
+                          //         2,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                    //       Container(
+                    //         height: getVerticalSize(
+                    //           5,
+                    //         ),
+                    //         width: getHorizontalSize(
+                    //           30,
+                    //         ),
+                    //         margin: getMargin(
+                    //           top: 4,
+                    //         ),
+                    //         decoration: BoxDecoration(
+                    //           color: ColorConstant.whiteA700,
+                    //           borderRadius: BorderRadius.circular(
+                    //             getHorizontalSize(
+                    //               2,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+              //       Padding(
+              //         padding: getPadding(
+              //           left: 32,
+              //           top: 4,
+              //         ),
+              //         child: Text(
+              //           "PET bottle recycler",
+              //           overflow: TextOverflow.ellipsis,
+              //           textAlign: TextAlign.left,
+              //           style: AppStyle.txtRobotoRegular24,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               Container(
                 width: getHorizontalSize(
-                  171,
+                  200,
                 ),
                 margin: getMargin(
-                  top: 23,
+                  top: 20,
                 ),
                 child: RichText(
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: "Bienvenue ",
+                        text: "Bienvenue\n",
                         style: TextStyle(
                           color: ColorConstant.blue800,
                           fontSize: getFontSize(
-                            18,
+                            22,
                           ),
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       TextSpan(
-                        text: capitalizeFirstLetter((userData['username']).toString()),
+                        text: capitalizeFirstLetter(
+                            (userData['username']).toString()),
                         style: TextStyle(
                           color: ColorConstant.redA700Ad,
                           fontSize: getFontSize(
-                            18,
+                            22,
                           ),
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       TextSpan(
-                        text: " sur votre profile",
+                        text: "\nsur votre profile",
                         style: TextStyle(
                           color: ColorConstant.blue800,
                           fontSize: getFontSize(
-                            18,
+                            22,
                           ),
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w600,
@@ -195,20 +214,42 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                 width: getHorizontalSize(
                   280,
                 ),
+                height: getVerticalSize(25),
                 margin: getMargin(
                   top: 31,
                 ),
                 padding: getPadding(
-                  left: 30,
+                  left: 10,
                   top: 1,
-                  right: 123,
+                  right: 10,
                   bottom: 1,
                 ),
                 decoration: AppDecoration.txtOutlineLightgreen900,
                 child: Text(
-                  "Nom",
+                  textAlign: TextAlign.center,
+                  userData['name'].toString(),
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
+                  style: AppStyle.txtRobotoRegular16,
+                ),
+              ),
+              Container(
+                width: getHorizontalSize(
+                  280,
+                ),
+                margin: getMargin(
+                  top: 12,
+                ),
+                padding: getPadding(
+                  left: 10,
+                  top: 1,
+                  right: 10,
+                  bottom: 1,
+                ),
+                decoration: AppDecoration.txtOutlineLightgreen900,
+                child: Text(
+                  userData['username'].toString(),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                   style: AppStyle.txtRobotoRegular14,
                 ),
               ),
@@ -220,16 +261,16 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                   top: 12,
                 ),
                 padding: getPadding(
-                  left: 30,
+                  left: 10,
                   top: 1,
-                  right: 114,
+                  right: 10,
                   bottom: 1,
                 ),
                 decoration: AppDecoration.txtOutlineLightgreen900,
                 child: Text(
-                  "Prénom",
+                  userData['email'].toString(),
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   style: AppStyle.txtRobotoRegular14,
                 ),
               ),
@@ -241,82 +282,45 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                   top: 12,
                 ),
                 padding: getPadding(
-                  left: 30,
+                  left: 10,
                   top: 1,
-                  right: 122,
+                  right: 10,
                   bottom: 1,
                 ),
                 decoration: AppDecoration.txtOutlineLightgreen900,
                 child: Text(
-                  "Email",
+                  userData['phone'].toString(),
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   style: AppStyle.txtRobotoRegular14,
                 ),
               ),
-              Container(
-                width: getHorizontalSize(
-                  280,
-                ),
-                margin: getMargin(
-                  top: 12,
-                ),
-                padding: getPadding(
-                  left: 30,
-                  top: 1,
-                  right: 104,
-                  bottom: 1,
-                ),
-                decoration: AppDecoration.txtOutlineLightgreen900,
-                child: Text(
-                  "Téléphone",
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
-                  style: AppStyle.txtRobotoRegular14,
-                ),
-              ),
-              Container(
-                width: getHorizontalSize(
-                  280,
-                ),
-                margin: getMargin(
-                  top: 12,
-                ),
-                padding: getPadding(
-                  left: 30,
-                  top: 1,
-                  right: 72,
-                  bottom: 1,
-                ),
-                decoration: AppDecoration.txtOutlineLightgreen900,
-                child: Text(
-                  "Mot de passe actuel",
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
-                  style: AppStyle.txtRobotoRegular14,
-                ),
-              ),
-              Container(
-                width: getHorizontalSize(
-                  200,
-                ),
-                margin: getMargin(
-                  top: 12,
-                ),
-                padding: getPadding(
-                  left: 8,
-                  top: 1,
-                  right: 8,
-                  bottom: 1,
-                ),
-                decoration: AppDecoration.txtOutlineLightgreen9001.copyWith(
-                  borderRadius: BorderRadiusStyle.txtRoundedBorder5,
-                ),
-                child: Text(
-                  "Modifier mon mot de passe",
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
-                  style: AppStyle.txtRobotoRegular14WhiteA700,
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, AppRoutes.changePasswordScreen);
+                },
+                child: Container(
+                  width: getHorizontalSize(
+                    200,
+                  ),
+                  margin: getMargin(
+                    top: 12,
+                  ),
+                  padding: getPadding(
+                    left: 8,
+                    top: 1,
+                    right: 8,
+                    bottom: 1,
+                  ),
+                  decoration: AppDecoration.txtOutlineLightgreen9001.copyWith(
+                    borderRadius: BorderRadiusStyle.txtRoundedBorder5,
+                  ),
+                  child: Text(
+                    "Modifier mon mot de passe",
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                    style: AppStyle.txtRobotoRegular14WhiteA700,
+                  ),
                 ),
               ),
               Padding(
@@ -326,7 +330,7 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                 child: Text(
                   "Grade actuel :",
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   style: AppStyle.txtRobotoRegular14Lightgreen800,
                 ),
               ),
@@ -338,16 +342,16 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                   top: 3,
                 ),
                 padding: getPadding(
-                  left: 30,
+                  left: 10,
                   top: 1,
-                  right: 96,
+                  right: 10,
                   bottom: 1,
                 ),
                 decoration: AppDecoration.txtOutlineLightgreen900,
                 child: Text(
                   "“PETty Master”",
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   style: AppStyle.txtRobotoRegular12,
                 ),
               ),
@@ -358,7 +362,7 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                 child: Text(
                   "Prochain grade :",
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   style: AppStyle.txtRobotoRegular14Lightgreen800,
                 ),
               ),
@@ -367,9 +371,9 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                   280,
                 ),
                 margin: getMargin(
-                  left: 40,
+                  left: 10,
                   top: 2,
-                  right: 40,
+                  right: 10,
                 ),
                 padding: getPadding(
                   all: 1,
@@ -391,7 +395,7 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                       child: Text(
                         "“Bottle Guru”",
                         overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
+                        textAlign: TextAlign.center,
                         style: AppStyle.txtRobotoRegular12,
                       ),
                     ),
@@ -405,7 +409,7 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                 child: Text(
                   "Dernière extrusion de PET :",
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   style: AppStyle.txtRobotoRegular14Lightgreen800,
                 ),
               ),
@@ -417,16 +421,16 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                   top: 3,
                 ),
                 padding: getPadding(
-                  left: 30,
+                  left: 10,
                   top: 1,
-                  right: 114,
+                  right: 10,
                   bottom: 1,
                 ),
                 decoration: AppDecoration.txtOutlineLightgreen900,
                 child: Text(
                   "8 mètres",
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   style: AppStyle.txtRobotoRegular12Lightgreen800,
                 ),
               ),
@@ -437,7 +441,7 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                 child: Text(
                   "Extrusion total de PET :",
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   style: AppStyle.txtRobotoRegular14Lightgreen800,
                 ),
               ),
@@ -450,16 +454,16 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                   bottom: 5,
                 ),
                 padding: getPadding(
-                  left: 30,
+                  left: 10,
                   top: 1,
-                  right: 111,
+                  right: 10,
                   bottom: 1,
                 ),
                 decoration: AppDecoration.txtOutlineLightgreen900,
                 child: Text(
                   "16 mètres",
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   style: AppStyle.txtRobotoRegular12Lightgreen800,
                 ),
               ),

@@ -31,6 +31,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isSecret = true;
   bool _isSecret2 = true;
 
+  final secureStorage = SecureStorage();
+
   String hashPassword(String password) {
     // Convertir le mot de passe en bytes
     var bytes = utf8.encode(password);
@@ -45,6 +47,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       backgroundColor: ColorConstant.backgroundApp,
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              secureStorage.deleteSecureData('userData');
+              Navigator.pushNamed(context, AppRoutes.authScreen);
+            },
+            icon: Icon(Icons.login),
+          ),
+        ],
+          centerTitle: true,
           title: const Text('Créer un compte'),
           backgroundColor: Color.fromARGB(255, 71, 144, 14)),
       body: SingleChildScrollView(
@@ -303,7 +315,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             !email.isEmpty &&
                             !password.isEmpty) {
                           var userData = await api.userData(email);
-                            print('userData: $userData');
+                          print('userData: $userData');
                           if (userData != '') {
                             // var secureStorage = SecureStorage();
                             // await secureStorage.writeSecureData('userData',userData);

@@ -156,7 +156,7 @@ class AppStyle {
   );
 
   static TextStyle txtRobotoRegular16 = TextStyle(
-    color: ColorConstant.blueGray400,
+    color: ColorConstant.black900,
     fontSize: getFontSize(
       16,
     ),
@@ -201,7 +201,7 @@ class AppStyle {
   );
 
   static TextStyle txtRobotoRegular14 = TextStyle(
-    color: ColorConstant.black9004c,
+    color: ColorConstant.black900,
     fontSize: getFontSize(
       14,
     ),
