@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:bottlerecyclerapp/core/app_export.dart';
+import 'package:bottlerecyclerapp/data/local_storage/secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:bottlerecyclerapp/components/CustomButton.dart';
-import 'package:bottlerecyclerapp/components/CustomFormFields.dart';
+import 'package:crypto/crypto.dart';
+import 'package:bottlerecyclerapp/data/apiClient/api_client.dart' as api;
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -11,6 +15,31 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
+  final RegExp _emailRegExp =
+      RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$');
+  final RegExp _phoneRegExp = RegExp(r'^[0-9]{10}$');
+
+  bool _isSecret = true;
+  bool _isSecret2 = true;
+
+  String hashPassword(String password) {
+    // Convertir le mot de passe en bytes
+    var bytes = utf8.encode(password);
+    // Calculer le hachage SHA-256
+    var digest = sha256.convert(bytes);
+    // Retourner le hachage sous forme de chaîne hexadécimale
+    return digest.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +52,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 20.0),
             const Text(
               'Bienvenue sur\n',
               style: TextStyle(
@@ -33,7 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-              const Text(
+            const Text(
               'Bottle Recycler App',
               style: TextStyle(
                 color: Colors.green,
@@ -42,7 +70,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-            
             const SizedBox(height: 20.0),
             CustomImageView(
               imagePath: ImageConstant.imgImage1,
@@ -62,66 +89,239 @@ class _RegisterScreenState extends State<RegisterScreen> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20.0),
+            /**
+             * ! ##########################################################
+             * !            DÉBUT DU FORMULAIRE D'INSCRIPTION
+             * ! ##########################################################
+             */
             Form(
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CustomFormField(
-                    labelText: 'Nom',
-                    obscureText: false,
+                  TextFormField(
+                    controller: _nameController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez saisir votre nom';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Nom *',
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                      // labelText: _labelText,
+                      filled: true,
+                      fillColor: Color.fromARGB(51, 75, 194, 80),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 100, 160, 20)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 12.0),
-                  CustomFormField(
-                    labelText: 'Prénom',
-                    obscureText: false,
+                  TextFormField(
+                    controller: _usernameController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez saisir votre prénom';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Prénom *',
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                      // labelText: _labelText,
+                      filled: true,
+                      fillColor: Color.fromARGB(51, 75, 194, 80),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 100, 160, 20)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 12.0),
-                  CustomFormField(
-                    labelText: 'E-mail',
-                    obscureText: false,
+                  TextFormField(
+                    controller: _emailController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez saisir votre adresse email';
+                      }
+                      if (!_emailRegExp.hasMatch(value)) {
+                        return 'Veuillez saisir une adresse email valide';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'E-mail *',
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                      // labelText: _labelText,
+                      filled: true,
+                      fillColor: Color.fromARGB(51, 75, 194, 80),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 100, 160, 20)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 12.0),
-                  CustomFormField(
-                    labelText: 'Mot de passe',
-                    obscureText: true,
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: _isSecret,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez saisir votre mot de passe';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Mot de passe *',
+                      suffixIcon: InkWell(
+                        onTap: () => setState(() => _isSecret = !_isSecret),
+                        child: Icon(
+                          !_isSecret ? Icons.visibility : Icons.visibility_off,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                      filled: true,
+                      fillColor: Color.fromARGB(51, 75, 194, 80),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 100, 160, 20)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 12.0),
-                  CustomFormField(
-                    labelText: 'Confirmer le mot de passe',
-                    obscureText: true,
+                  TextFormField(
+                    controller: _confirmPasswordController,
+                    obscureText: _isSecret2,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez saisir à nouveau, votre mot de passe';
+                      } else if (!value.isEmpty &&
+                          !_passwordController.text.isEmpty) {
+                        if (value != _passwordController.text) {
+                          return 'Les mots de passe ne correspondent pas';
+                        }
+                        return null;
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Confirmation Mot de passe *',
+                      suffixIcon: InkWell(
+                        onTap: () => setState(() => _isSecret2 = !_isSecret2),
+                        child: Icon(
+                          !_isSecret2 ? Icons.visibility : Icons.visibility_off,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                      filled: true,
+                      fillColor: Color.fromARGB(51, 75, 194, 80),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 100, 160, 20)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12.0),
+                  TextFormField(
+                    controller: _phoneController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        _phoneController.text = 'non renseigné';
+                        return null;
+                      }
+                      if (value.isNotEmpty && !_phoneRegExp.hasMatch(value)) {
+                        return 'Veuillez saisir un numéro de téléphone valide';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Téléphone (facultatif)',
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                      // labelText: _labelText,
+                      filled: true,
+                      fillColor: Color.fromARGB(51, 75, 194, 80),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 100, 160, 20)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 30.0),
                   CustomButton.secondary(
                     text: 'S\'inscrire',
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/TutoDebutant');
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        var name = _nameController.text;
+                        var username = _usernameController.text;
+                        var email = _emailController.text;
+                        var password = hashPassword(_passwordController.text);
+                        var phone = _phoneController.text;
+
+                        if (!name.isEmpty &&
+                            !username.isEmpty &&
+                            !email.isEmpty &&
+                            !password.isEmpty) {
+                          var userData = await api.userData(email);
+                            print('userData: $userData');
+                          if (userData != '') {
+                            // var secureStorage = SecureStorage();
+                            // await secureStorage.writeSecureData('userData',userData);
+                          }
+
+                          var secureStorage = SecureStorage();
+                          await secureStorage.writeSecureData(
+                              'userData', userData.toString());
+
+                          // Navigator.pushNamed(
+                          //     context, AppRoutes.profilUserScreen);
+                        }
+                      }
                     },
                   ),
                 ],
               ),
             ),
-            // CustomTextField(
-            //   labelText: 'Nom Prénom',
-            // ),
-            // const SizedBox(height: 12.0),
-            // CustomTextField(
-            //   labelText: 'E-mail',
-            // ),
-            // const SizedBox(height: 12.0),
-            // CustomTextField(
-            //   labelText: 'Mot de passe',
-            // ),
-            // const SizedBox(height: 12.0),
-            // CustomTextField(
-            //   labelText: 'Confirmer le mot de passe',
-            // ),
-            // const SizedBox(height: 30.0),
-            // CustomButton.secondary(
-            //   text: 'S\'inscrire',
-            //   onPressed: () {
-            //     Navigator.pushNamed(context, '/auth');
-            //   },
-            // ),
           ],
         ),
       ),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bottlerecyclerapp/core/app_export.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -12,53 +14,39 @@ class ProfilUserScreen extends StatefulWidget {
 }
 
 class _ProfilUserScreenState extends State<ProfilUserScreen> {
-  
   final secureStorage = SecureStorage();
-  String? email;
+
+  String jsonStringData = '';
+  Map<String, dynamic> userData = {};
 
   @override
   void initState() {
     super.initState();
-    getEmailFromSecureStorage();
+    getUserDataFromSecureStorage();
   }
 
-  void getEmailFromSecureStorage() async {
-    email = await secureStorage.readSecureData('email') ?? 'No data found';
-    setState(() {}); // Update the state to reflect the email value
+  Future<Map<String, dynamic>> getUserDataFromSecureStorage() async {
+    jsonStringData =
+        await secureStorage.readSecureData('userData') ?? 'No data found';
+    userData = jsonDecode(jsonStringData);
+    setState(() {
+      this.userData = userData;
+    });
+    return userData;
   }
-  // final secureStorage = SecureStorage();
-  // Object email = SecureStorage.readSecureData('email') ?? 'No data found';
-  // String value = await SecureStorage.readSecureData(key: 'email') ?? 'No data found';
-  String? password;
 
-  // @override
-  // void initState() {
-  // super.initState();
-  // final email = storage.read(key: 'email');
-  // SecureStorage().readSecureData('email');
-  // .then((value) {
-  //   setState(() {
-  //     email = value;
-  //   });
-  // }
-  // api.userData(email, password).then((data) {
-  //   setState(() {
-  //     userData = data;
-  //   });
-  // }).catchError((error) {
-  //   // Gérer les erreurs de récupération des données de l'utilisateur
-  //   print(
-  //       'Erreur lors de la récupération des données de l\'utilisateur : $error');
-  // });
-  // print('storage email: $email');
-  // }
+  String capitalizeFirstLetter(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+    return input[0].toUpperCase() + input.substring(1);
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConstant.backgroundApp,
-        // backgroundColor: ColorConstant.whiteA700,
         body: SizedBox(
           width: double.maxFinite,
           child: Column(
@@ -166,7 +154,7 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: "Bienvenue",
+                        text: "Bienvenue ",
                         style: TextStyle(
                           color: ColorConstant.blue800,
                           fontSize: getFontSize(
@@ -177,7 +165,7 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                         ),
                       ),
                       TextSpan(
-                        text: ' $email ',
+                        text: capitalizeFirstLetter((userData['username']).toString()),
                         style: TextStyle(
                           color: ColorConstant.redA700Ad,
                           fontSize: getFontSize(
@@ -188,7 +176,7 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                         ),
                       ),
                       TextSpan(
-                        text: "sur votre profile",
+                        text: " sur votre profile",
                         style: TextStyle(
                           color: ColorConstant.blue800,
                           fontSize: getFontSize(

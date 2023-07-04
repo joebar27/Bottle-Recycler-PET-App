@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_is_not_empty, depend_on_referenced_packages
 import 'package:bottlerecyclerapp/core/app_export.dart';
 import 'package:bottlerecyclerapp/data/local_storage/secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:bottlerecyclerapp/components/CustomButton.dart';
 import 'package:bottlerecyclerapp/data/apiClient/api_client.dart' as api;
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -24,6 +25,29 @@ class _AuthScreenState extends State<AuthScreen> {
 
   bool _isSecret = true;
   String data = '';
+
+@override
+  void initState() {
+    super.initState();
+    userIsConnect();
+  }
+
+  void userIsConnect() async {
+    var secureStorage = SecureStorage();
+    var userData = await secureStorage.readSecureData('userData');
+    if (userData != null) {
+      Navigator.pushNamed(context, AppRoutes.profilUserScreen);
+    }
+  }
+  
+  String hashPassword(String password) {
+    // Convertir le mot de passe en bytes
+    var bytes = utf8.encode(password);
+    // Calculer le hachage SHA-256
+    var digest = sha256.convert(bytes);
+    // Retourner le hachage sous forme de chaîne hexadécimale
+    return digest.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,15 +175,19 @@ class _AuthScreenState extends State<AuthScreen> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         var email = _emailController.text;
-                        var password = _mdpController.text;
+                        var password = hashPassword(_mdpController.text);
 
                         if (!email.isEmpty && !password.isEmpty) {
-                          var userData = await api.userData(email);
-                          print('userData:' + userData['email']);
+                          var userData = await api.userLogin(email, password);
+                          if (userData != null) {
+                            print('userData: $userData');
+                            // var secureStorage = SecureStorage();
+                            // await secureStorage.writeSecureData('userData',userData);
+                          }
 
                           var secureStorage = SecureStorage();
-                          await secureStorage.writeSecureData(
-                              'email', userData['email']);
+                          await secureStorage.writeSecureData('userData', userData);
+
                           Navigator.pushNamed(
                               context, AppRoutes.profilUserScreen);
                         }

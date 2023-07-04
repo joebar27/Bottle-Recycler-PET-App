@@ -1,16 +1,19 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class CustomFormField extends StatefulWidget {
   const CustomFormField(
-      {super.key, required String labelText, required bool obscureText});
+      {super.key, required String labelText, required bool isSecret});
 
   @override
   State<CustomFormField> createState() => _CustomFormFieldState();
 }
 
 class _CustomFormFieldState extends State<CustomFormField> {
+  
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _isSecret = true;
+  bool _isSecret = false;
   String _labelText = '';
   String _email = '';
 
