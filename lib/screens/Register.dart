@@ -1,11 +1,9 @@
 import 'dart:convert';
-
 import 'package:bottlerecyclerapp/core/app_export.dart';
 import 'package:bottlerecyclerapp/data/local_storage/secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:bottlerecyclerapp/components/CustomButton.dart';
-import 'package:crypto/crypto.dart';
-import 'package:bottlerecyclerapp/data/apiClient/api_client.dart' as api;
+import 'package:bottlerecyclerapp/data/apiClient/api_client_test.dart' as api;
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -23,6 +21,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final secureStorage = SecureStorage();
 
   final RegExp _emailRegExp =
       RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$');
@@ -31,31 +30,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isSecret = true;
   bool _isSecret2 = true;
 
-  final secureStorage = SecureStorage();
-
-  String hashPassword(String password) {
-    // Convertir le mot de passe en bytes
-    var bytes = utf8.encode(password);
-    // Calculer le hachage SHA-256
-    var digest = sha256.convert(bytes);
-    // Retourner le hachage sous forme de chaîne hexadécimale
-    return digest.toString();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstant.backgroundApp,
       appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              secureStorage.deleteSecureData('userData');
-              Navigator.pushNamed(context, AppRoutes.authScreen);
-            },
-            icon: Icon(Icons.login),
-          ),
-        ],
+          actions: <Widget>[
+            FutureBuilder(
+              future: secureStorage.readSecureData('userData'),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData && snapshot.data != '') {
+                  return IconButton(
+                    onPressed: () {
+                      secureStorage.deleteSecureData('userData');
+                      Navigator.pushNamed(context, AppRoutes.authScreen);
+                    },
+                    icon: Icon(Icons.login),
+                  );
+                } else {
+                  return Container(); // On retourne un container vide si la condition n'est pas respectée
+                }
+              },
+            ),
+          ],
           centerTitle: true,
           title: const Text('Créer un compte'),
           backgroundColor: Color.fromARGB(255, 71, 144, 14)),
@@ -307,23 +304,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         var name = _nameController.text;
                         var username = _usernameController.text;
                         var email = _emailController.text;
-                        var password = hashPassword(_passwordController.text);
+                        var password = _passwordController.text;
                         var phone = _phoneController.text;
 
                         if (!name.isEmpty &&
                             !username.isEmpty &&
                             !email.isEmpty &&
-                            !password.isEmpty) {
-                          var userData = await api.userData(email);
-                          print('userData: $userData');
+                            !password.isEmpty && !phone.isEmpty) {
+
+                          var userData = await api.userRegister(name, username,
+                              email, password, phone);
+                          print(userData);
                           if (userData != '') {
                             // var secureStorage = SecureStorage();
                             // await secureStorage.writeSecureData('userData',userData);
-                          }
 
                           var secureStorage = SecureStorage();
                           await secureStorage.writeSecureData(
-                              'userData', userData.toString());
+                              'userData', jsonEncode(userData));
+                          }
 
                           // Navigator.pushNamed(
                           //     context, AppRoutes.profilUserScreen);

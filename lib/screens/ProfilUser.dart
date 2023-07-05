@@ -2,9 +2,7 @@ import 'dart:convert';
 
 import 'package:bottlerecyclerapp/core/app_export.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:bottlerecyclerapp/data/local_storage/secure_storage.dart';
-// import 'package:bottlerecyclerapp/data/apiClient/api_client.dart' as api;
 
 class ProfilUserScreen extends StatefulWidget {
   const ProfilUserScreen({Key? key}) : super(key: key);
@@ -29,12 +27,12 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
     jsonStringData =
         await secureStorage.readSecureData('userData') ?? 'No data found';
     if (jsonStringData != 'No data found') {
-      // Navigator.pushNamed(context, AppRoutes.authScreen);
       userData = jsonDecode(jsonStringData);
+      print('getUser: $userData');
     }
-    // userData = jsonDecode(jsonStringData);
+
     setState(() {
-      this.userData = userData;
+      this.userData = userData['user'];
     });
     return userData;
   }
@@ -70,97 +68,6 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              // Container(
-                // width: double.maxFinite,
-                // padding: getPadding(
-                //   left: 10,
-                //   top: 11,
-                //   right: 10,
-                //   bottom: 11,
-                // ),
-                // decoration: AppDecoration.fillLightgreen800,
-                // child: Row(
-                //   children: [
-                    // Padding(
-                    //   padding: getPadding(
-                    //     top: 5,
-                    //     bottom: 5,
-                    //   ),
-                      // child: Column(
-                      //   mainAxisAlignment: MainAxisAlignment.start,
-                      //   children: [
-                      //     Container(
-                      //       height: getVerticalSize(
-                      //         5,
-                      //       ),
-                      //       width: getHorizontalSize(
-                      //         30,
-                      //       ),
-                      //       decoration: BoxDecoration(
-                      //         color: ColorConstant.whiteA700,
-                      //         borderRadius: BorderRadius.circular(
-                      //           getHorizontalSize(
-                      //             2,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ),
-                          // Container(
-                          //   height: getVerticalSize(
-                          //     5,
-                          //   ),
-                          //   width: getHorizontalSize(
-                          //     30,
-                          //   ),
-                          //   margin: getMargin(
-                          //     top: 4,
-                          //   ),
-                          //   decoration: BoxDecoration(
-                          //     color: ColorConstant.whiteA700,
-                          //     borderRadius: BorderRadius.circular(
-                          //       getHorizontalSize(
-                          //         2,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-                    //       Container(
-                    //         height: getVerticalSize(
-                    //           5,
-                    //         ),
-                    //         width: getHorizontalSize(
-                    //           30,
-                    //         ),
-                    //         margin: getMargin(
-                    //           top: 4,
-                    //         ),
-                    //         decoration: BoxDecoration(
-                    //           color: ColorConstant.whiteA700,
-                    //           borderRadius: BorderRadius.circular(
-                    //             getHorizontalSize(
-                    //               2,
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-              //       Padding(
-              //         padding: getPadding(
-              //           left: 32,
-              //           top: 4,
-              //         ),
-              //         child: Text(
-              //           "PET bottle recycler",
-              //           overflow: TextOverflow.ellipsis,
-              //           textAlign: TextAlign.left,
-              //           style: AppStyle.txtRobotoRegular24,
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
               Container(
                 width: getHorizontalSize(
                   200,
@@ -183,8 +90,9 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                         ),
                       ),
                       TextSpan(
-                        text: capitalizeFirstLetter(
-                            (userData['username']).toString()),
+                        text: userData['username'] != null
+                            ? capitalizeFirstLetter(userData['username'])
+                            : 'Default Username',
                         style: TextStyle(
                           color: ColorConstant.redA700Ad,
                           fontSize: getFontSize(

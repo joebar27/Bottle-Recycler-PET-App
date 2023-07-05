@@ -3,12 +3,12 @@ import 'package:bottlerecyclerapp/core/app_export.dart';
 import 'package:bottlerecyclerapp/data/local_storage/secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:bottlerecyclerapp/components/CustomButton.dart';
-import 'package:bottlerecyclerapp/data/apiClient/api_client.dart' as api;
+import 'package:bottlerecyclerapp/data/apiClient/api_client_test.dart' as api;
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
 class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key});
+  const AuthScreen({Key? key}) : super(key: key);
 
   @override
   State<AuthScreen> createState() => _AuthScreenState();
@@ -18,7 +18,6 @@ class _AuthScreenState extends State<AuthScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _mdpController = TextEditingController();
-  // final storage = FlutterSecureStorage();
 
   final RegExp _emailRegExp =
       RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$');
@@ -34,8 +33,6 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void userIsConnect() async {
-    // print(await secureStorage.readSecureData('userData'));
-    // await secureStorage.deleteSecureData('userData');
     if (await secureStorage.readSecureData('userData') != '') {
       Navigator.pushNamed(context, AppRoutes.profilUserScreen);
     }
@@ -176,21 +173,23 @@ class _AuthScreenState extends State<AuthScreen> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         var email = _emailController.text;
-                        var password = hashPassword(_mdpController.text);
+                        var password = _mdpController.text;
 
-                        if (!email.isEmpty && !password.isEmpty) {
-                          var userData = await api.userLogin(email, password);
-                          if (userData != null) {
-                            // var secureStorage = SecureStorage();
-                            // await secureStorage.writeSecureData('userData',userData);
-                          }
-
+                        final result = await api.userLogin(email, password);
+                        if (result['status'] == 'success') {
+                          var userData = result['data'];
+                          print('print ; $userData');
                           var secureStorage = SecureStorage();
                           await secureStorage.writeSecureData(
                               'userData', userData);
-
                           Navigator.pushNamed(
                               context, AppRoutes.profilUserScreen);
+                        } else {
+                          // Si le statut est 'error'
+                          _emailController.clear();
+                          _mdpController.clear();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(result['message'])));
                         }
                       }
                     },
