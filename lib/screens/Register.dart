@@ -310,20 +310,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         if (!name.isEmpty &&
                             !username.isEmpty &&
                             !email.isEmpty &&
-                            !password.isEmpty && !phone.isEmpty) {
+                            !password.isEmpty &&
+                            !phone.isEmpty) {
 
-                          var userData = await api.userRegister(name, username,
-                              email, password, phone);
-                          print(userData);
-                          if (userData != '') {
-                            // var secureStorage = SecureStorage();
-                            // await secureStorage.writeSecureData('userData',userData);
-
-                          var secureStorage = SecureStorage();
-                          await secureStorage.writeSecureData(
-                              'userData', jsonEncode(userData));
+                          var userExiste = await api.userData(email);
+                          print('user data: ' + userExiste['status'].toString());
+                          if (userExiste['status'] == 'success') {
+                            print('user existe');
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Un compte existe déjà avec cette adresse email'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          } else {
+                            print('user n\'existe pas');
+                            var userRegister = await api.userRegister(name, username,
+                                email, password, phone);
+                            print('user data register: $userRegister');
+                            var secureStorage = SecureStorage();
+                            await secureStorage.writeSecureData(
+                                'userData', jsonEncode(userRegister));
+                            var storage = await secureStorage.readSecureData('userData');
+                            print('after user data register: $storage');
+                            // Navigator.pushNamed(
+                            //     context, AppRoutes.profilUserScreen);
                           }
-
+                          // var userData = await api.userRegister(name, username,
+                          //     email, password, phone);
+                          // print('user data register: $userData');
+                          // var secureStorage = SecureStorage();
+                          // await secureStorage.writeSecureData(
+                          //     'userData', jsonEncode(userData));
+                          // var storage = await secureStorage.readSecureData('userData');
+                          // print('after user data register: $storage');
                           // Navigator.pushNamed(
                           //     context, AppRoutes.profilUserScreen);
                         }
