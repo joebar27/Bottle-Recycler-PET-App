@@ -1,11 +1,8 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_is_not_empty, depend_on_referenced_packages
 import 'package:bottlerecyclerapp/core/app_export.dart';
-import 'package:bottlerecyclerapp/data/local_storage/secure_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:bottlerecyclerapp/components/CustomButton.dart';
-import 'package:bottlerecyclerapp/data/apiClient/api_client_test.dart' as api;
-import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:bottlerecyclerapp/data/apiClient/api_client.dart' as api;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -50,6 +47,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       backgroundColor: ColorConstant.backgroundApp,
       body: SingleChildScrollView(
         padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),

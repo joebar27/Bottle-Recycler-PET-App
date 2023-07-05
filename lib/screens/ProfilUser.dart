@@ -1,8 +1,4 @@
-import 'dart:convert';
-
 import 'package:bottlerecyclerapp/core/app_export.dart';
-import 'package:flutter/material.dart';
-import 'package:bottlerecyclerapp/data/local_storage/secure_storage.dart';
 
 class ProfilUserScreen extends StatefulWidget {
   const ProfilUserScreen({Key? key}) : super(key: key);
@@ -48,7 +44,6 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: ColorConstant.backgroundApp,
         appBar: AppBar(
           actions: [
             IconButton(
@@ -59,10 +54,92 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
               icon: Icon(Icons.login),
             ),
           ],
-          centerTitle: true,
-          title: Text("Profile", style: AppStyle.txtRobotoRegular24),
           backgroundColor: Color.fromARGB(255, 71, 144, 14),
+          title: Text('Bottle Recycler App'),
         ),
+        drawer: Drawer(
+          backgroundColor: Color.fromARGB(255, 100, 160, 20),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              //! header du drawer :
+              Container(
+                height: 100,
+                child: DrawerHeader(
+                  margin: EdgeInsets.all(0),
+                  padding: EdgeInsets.all(0),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 100, 160, 20),
+                  ),
+                  child: Container(
+                    height: 30,
+                    child: Center(
+                      child: Text(
+                        'Menu',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              //! liste des items du drawer :
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      style: ListTileStyle.drawer,
+                      leading: Icon(Icons.home, color: Colors.white),
+                      title: Text(
+                        'Home',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.homeScreen);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.summarize,
+                        color: Colors.white,
+                      ),
+                      title: Text('Tutoriel Débutant',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                          )),
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, AppRoutes.tutoDebutantScreen);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.account_circle,
+                        color: Colors.white,
+                      ),
+                      title: Text('Profil',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                          )),
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, AppRoutes.profilUserScreen);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: ColorConstant.backgroundApp,
         body: SizedBox(
           width: double.maxFinite,
           child: Column(

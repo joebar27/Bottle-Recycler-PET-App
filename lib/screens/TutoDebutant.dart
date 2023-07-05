@@ -1,16 +1,136 @@
-import 'package:flutter/material.dart';
 import '../core/app_export.dart';
 
-class TutoDebutantScreen extends StatelessWidget {
-  const TutoDebutantScreen({Key? key})
-      : super(
-          key: key,
-        );
+class TutoDebutantScreen extends StatefulWidget {
+  const TutoDebutantScreen({Key? key}) : super(key: key);
+
+  @override
+  _TutoDebutantScreenState createState() => _TutoDebutantScreenState();
+}
+
+class _TutoDebutantScreenState extends State<TutoDebutantScreen> {
+  final secureStorage = SecureStorage();
+  String jsonStringData = '';
+  Map<String, dynamic> userData = {};
+
+  @override
+  void initState() {
+    super.initState();
+    getUserDataFromSecureStorage();
+  }
+
+  Future<Map<String, dynamic>> getUserDataFromSecureStorage() async {
+    jsonStringData =
+        await secureStorage.readSecureData('userData') ?? 'No data found';
+    if (jsonStringData != 'No data found') {
+      userData = jsonDecode(jsonStringData);
+      print('getUser: $userData');
+    }
+
+    setState(() {
+      this.userData = userData['user'];
+    });
+    return userData;
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(
+              onPressed: () {
+                secureStorage.deleteSecureData('userData');
+                Navigator.pushNamed(context, AppRoutes.authScreen);
+              },
+              icon: Icon(Icons.login),
+            ),
+          ],
+          backgroundColor: Color.fromARGB(255, 71, 144, 14),
+          title: Text('Bottle Recycler App'),
+        ),
+        drawer: Drawer(
+          backgroundColor: Color.fromARGB(255, 100, 160, 20),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              //! header du drawer :
+              Container(
+                height: 100,
+                child: DrawerHeader(
+                  margin: EdgeInsets.all(0),
+                  padding: EdgeInsets.all(0),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 100, 160, 20),
+                  ),
+                  child: Container(
+                    height: 30,
+                    child: Center(
+                      child: Text(
+                        'Menu',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              //! liste des items du drawer :
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      style: ListTileStyle.drawer,
+                      leading: Icon(Icons.home, color: Colors.white),
+                      title: Text(
+                        'Home',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.homeScreen);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.summarize,
+                        color: Colors.white,
+                      ),
+                      title: Text('Tutoriel Débutant',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                          )),
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, AppRoutes.tutoDebutantScreen);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.account_circle,
+                        color: Colors.white,
+                      ),
+                      title: Text('Profil',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                          )),
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, AppRoutes.profilUserScreen);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
         backgroundColor: ColorConstant.backgroundApp,
         body: SizedBox(
           width: double.maxFinite,
@@ -22,97 +142,6 @@ class TutoDebutantScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                        width: double.maxFinite,
-                        padding: getPadding(
-                          left: 10,
-                          top: 11,
-                          right: 10,
-                          bottom: 11,
-                        ),
-                        decoration: AppDecoration.fillLightgreen800,
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: getPadding(
-                                top: 5,
-                                bottom: 5,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    height: getVerticalSize(
-                                      5,
-                                    ),
-                                    width: getHorizontalSize(
-                                      30,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: ColorConstant.whiteA700,
-                                      borderRadius: BorderRadius.circular(
-                                        getHorizontalSize(
-                                          2,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: getVerticalSize(
-                                      5,
-                                    ),
-                                    width: getHorizontalSize(
-                                      30,
-                                    ),
-                                    margin: getMargin(
-                                      top: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: ColorConstant.whiteA700,
-                                      borderRadius: BorderRadius.circular(
-                                        getHorizontalSize(
-                                          2,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: getVerticalSize(
-                                      5,
-                                    ),
-                                    width: getHorizontalSize(
-                                      30,
-                                    ),
-                                    margin: getMargin(
-                                      top: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: ColorConstant.whiteA700,
-                                      borderRadius: BorderRadius.circular(
-                                        getHorizontalSize(
-                                          2,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: getPadding(
-                                left: 32,
-                                top: 4,
-                              ),
-                              child: Text(
-                                "PET bottle recycler",
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.left,
-                                style: AppStyle.txtRobotoRegular24,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                       Container(
                         width: getHorizontalSize(
                           204,

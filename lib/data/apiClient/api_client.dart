@@ -1,120 +1,141 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:bottlerecyclerapp/core/utils/utils.dart';
 
-Future<Map<String, dynamic>> userData(String email) async {
-  String url = Utils.baseUrl + "users/" + email;
-  print('URL for request: $url');
-  try {
-    final response = await http.get(
-      Uri.parse(url),
-    );
-    if (response.statusCode == 200) {
-      print('response.body2: ' + response.body);
-      var convertDataToJson = jsonDecode(response.body);
+// Future<Map<String, dynamic>> sendRequest(
+//     String url, Map<String, String> headers,
+//     {String? body}) async {
+//   final response = await http.post(
+//     Uri.parse(url),
+//     headers: headers,
+//     body: body,
+//   );
 
-        print('convertdatajson: $convertDataToJson');
-      if (convertDataToJson is Map<String, dynamic>) {
-        return convertDataToJson;
-      } else {
-        throw Exception('Invalid format received from the server');
-      }
-    } else if (response.statusCode == 400) {
-      // Bad Request - Invalid credentials
-      var errorJson = jsonDecode(response.body);
-      var errorMessage = errorJson['message'];
-      throw Exception(errorMessage);
-    } else if (response.statusCode == 404) {
-      // Not Found - User not found
-      throw Exception('Utilisateur introuvable: ${response.statusCode}}');
-    } else {
-      throw Exception(
-          'Server responded with status code: ${response.statusCode}');
-    }
-  } on SocketException catch (_) {
-    return {'error': 'Connexion refusée'};
-  } catch (e) {
-    // print('Error occurred: $e');
-    return {'error': 'Une erreur inattendue est survenue'};
+//   if (response.statusCode == 200) {
+//     return {'status': 'success', 'data': response.body};
+//   } else if (response.statusCode == 201) {
+//     return {'status': 'succes', 'message': 'created successfully'};
+//   } else if (response.statusCode == 401) {
+//     return {'status': 'error', 'message': 'access denied'};
+//   } else if (response.statusCode == 404) {
+//     return {'status': 'error', 'message': 'data not found'};
+//   } else {
+//     return {'status': 'error', 'message': 'Erreur lors de la requête'};
+//   }
+// }
+
+Future<Map<String, dynamic>> sendRequest(
+    String url, Map<String, String> headers, String method,
+    {String? body}) async {
+  http.Response response;
+
+  if (method == 'GET') {
+    response = await http.get(
+      Uri.parse(url),
+      headers: headers,
+    );
+  } else if (method == 'POST') {
+    response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: body,
+    );
+  } else {
+    throw Exception('Method not supported');
+  }
+  if (response.statusCode == 200) {
+    return {'status': 'success', 'data': response.body};
+  } else if (response.statusCode == 201) {
+    return {'status': 'success', 'message': 'created successfully', 'data': response.body};
+  } else if (response.statusCode == 401) {
+    return {'status': 'error', 'message': 'access denied'};
+  } else if (response.statusCode == 404) {
+    return {'status': 'error', 'message': 'data not found'};
+  } else {
+    return {'status': 'error', 'message': 'Erreur lors de la requête'};
   }
 }
 
+// Dans la fonction userData
+Future<Map<String, dynamic>> userData(String email) async {
+  String url = Utils.baseUrl + "users/" + email;
+  return sendRequest(url, {'Content-Type': 'application/json'}, 'GET');
+}
+
+// Future<Map<String, dynamic>> userData(String email) async {
+//   String url = Utils.baseUrl + "users/" + email;
+//   final response = await http.post(
+//     Uri.parse(url),
+//     headers: {'Content-Type': 'application/json'},
+//     body: json.encode({'email': email}),
+//   );
+
+//   if (response.statusCode == 200) {
+//     return {'status': 'success', 'data': response.body};
+//   } else if (response.statusCode == 401) {
+//     return {'status': 'error', 'message': 'access denied'};
+//   } else if (response.statusCode == 404) {
+//     return {'status': 'error', 'message': 'data not found'};
+//   } else {
+//     return {'status': 'error', 'message': 'Erreur lors de la requête'};
+//   }
+//   // return sendRequest(url, {'Content-Type': 'application/json'});
+// }
+
 Future<Map<String, dynamic>> userRegister(String name, String username,
     String email, String password, String phone) async {
-  String url = Utils.baseUrl + "users/register";
-  print('URL for request: $url');
-  try {
-    final response = await http.post(
-      Uri.parse(url),
-      body: jsonEncode({
+  final url = Utils.baseUrl + "users/register";
+  return sendRequest(
+      url,
+      {'Content-Type': 'application/json'},
+      body: json.encode({
         "name": name,
         "username": username,
         "email": email,
         "password": password,
         "phone": phone
       }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    );
-
-    if (response.statusCode == 200) {
-      var convertDataToJson = jsonDecode(response.body);
-
-      if (convertDataToJson is Map<String, dynamic>) {
-        print(convertDataToJson);
-        return convertDataToJson;
-      } else {
-        throw Exception('Invalid format received from the server');
-      }
-    } else if (response.statusCode == 400) {
-      // Bad Request - Invalid credentials
-      var errorJson = jsonDecode(response.body);
-      var errorMessage = errorJson['message'];
-      throw Exception(errorMessage);
-    } else if (response.statusCode == 404) {
-      // Not Found - User not found
-      throw Exception('Utilisateur introuvable');
-    } else {
-      throw Exception(
-          'Server responded with status code: ${response.statusCode}');
-    }
-  } on SocketException catch (_) {
-    return {'error': 'Connexion refusée'};
-  } catch (e) {
-    print('Error occurred: $e');
-    return {'error': 'Une erreur inattendue est survenue'};
-  }
+      'POST');
+  // final response = await http.post(
+  //   Uri.parse(url),
+  //   headers: {'Content-Type': 'application/json'},
+  //   // body: json.encode({'email': email, 'password': password}),
+  //   body: json.encode({
+  //     "name": name,
+  //     "username": username,
+  //     "email": email,
+  //     "password": password,
+  //     "phone": phone
+  //   }),
+  // );
+  // if (response.statusCode == 200) {
+  //   return {'status': 'success', 'data': response.body};
+  // } else if (response.statusCode == 401) {
+  //   return {'status': 'error', 'message': 'access denied'};
+  // } else if (response.statusCode == 404) {
+  //   return {'status': 'error', 'message': 'data not found'};
+  // } else {
+  //   return {'status': 'error', 'message': 'Erreur lors de la requête'};
+  // }
+  // return sendRequest(url, {'Content-Type': 'application/json'}, body: body);
 }
 
-Future<String> userLogin(String email, String password) async {
+Future<Map<String, dynamic>> userLogin(String email, String password) async {
   final url = Utils.baseUrl + "users/login";
-  final passwordHashed = hashPassword(password);
 
   final response = await http.post(
     Uri.parse(url),
     headers: {'Content-Type': 'application/json'},
-    body: json.encode({'email': email, 'password': passwordHashed}),
+    body: json.encode({'email': email, 'password': password}),
   );
 
   if (response.statusCode == 200) {
-    return response.body;
+    return {'status': 'success', 'data': response.body};
   } else if (response.statusCode == 401) {
-    return 'Mot de passe incorrect';
+    return {'status': 'error', 'message': 'access denied'};
   } else if (response.statusCode == 404) {
-    return 'Utilisateur non trouvé';
+    return {'status': 'error', 'message': 'data not found'};
   } else {
-    return 'Erreur lors de la requête';
+    return {'status': 'error', 'message': 'Erreur lors de la requête'};
   }
 }
-
-String hashPassword(String password) {
-    // Convertir le mot de passe en bytes
-    var bytes = utf8.encode(password);
-    // Calculer le hachage SHA-256
-    var digest = sha256.convert(bytes);
-    // Retourner le hachage sous forme de chaîne hexadécimale
-    return digest.toString();
-  }
