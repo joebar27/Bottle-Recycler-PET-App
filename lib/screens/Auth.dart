@@ -176,7 +176,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         final result = await api.userLogin(email, password);
                         if (result['status'] == 'success') {
                           var userData = result['data'];
-                          print('print ; $userData');
+                          print('print loggin : $userData');
                           var secureStorage = SecureStorage();
                           await secureStorage.writeSecureData(
                               'userData', userData);

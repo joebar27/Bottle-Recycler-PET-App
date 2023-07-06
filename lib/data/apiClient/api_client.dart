@@ -2,27 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:bottlerecyclerapp/core/utils/utils.dart';
 
-// Future<Map<String, dynamic>> sendRequest(
-//     String url, Map<String, String> headers,
-//     {String? body}) async {
-//   final response = await http.post(
-//     Uri.parse(url),
-//     headers: headers,
-//     body: body,
-//   );
-
-//   if (response.statusCode == 200) {
-//     return {'status': 'success', 'data': response.body};
-//   } else if (response.statusCode == 201) {
-//     return {'status': 'succes', 'message': 'created successfully'};
-//   } else if (response.statusCode == 401) {
-//     return {'status': 'error', 'message': 'access denied'};
-//   } else if (response.statusCode == 404) {
-//     return {'status': 'error', 'message': 'data not found'};
-//   } else {
-//     return {'status': 'error', 'message': 'Erreur lors de la requête'};
-//   }
-// }
 
 Future<Map<String, dynamic>> sendRequest(
     String url, Map<String, String> headers, String method,
@@ -40,7 +19,12 @@ Future<Map<String, dynamic>> sendRequest(
       headers: headers,
       body: body,
     );
-  } else {
+  } else if (method == 'DELETE'){
+    response = await http.delete(
+      Uri.parse(url),
+      headers: headers,
+    );
+  }else {
     throw Exception('Method not supported');
   }
   if (response.statusCode == 200) {
@@ -56,31 +40,10 @@ Future<Map<String, dynamic>> sendRequest(
   }
 }
 
-// Dans la fonction userData
 Future<Map<String, dynamic>> userData(String email) async {
   String url = Utils.baseUrl + "users/" + email;
   return sendRequest(url, {'Content-Type': 'application/json'}, 'GET');
 }
-
-// Future<Map<String, dynamic>> userData(String email) async {
-//   String url = Utils.baseUrl + "users/" + email;
-//   final response = await http.post(
-//     Uri.parse(url),
-//     headers: {'Content-Type': 'application/json'},
-//     body: json.encode({'email': email}),
-//   );
-
-//   if (response.statusCode == 200) {
-//     return {'status': 'success', 'data': response.body};
-//   } else if (response.statusCode == 401) {
-//     return {'status': 'error', 'message': 'access denied'};
-//   } else if (response.statusCode == 404) {
-//     return {'status': 'error', 'message': 'data not found'};
-//   } else {
-//     return {'status': 'error', 'message': 'Erreur lors de la requête'};
-//   }
-//   // return sendRequest(url, {'Content-Type': 'application/json'});
-// }
 
 Future<Map<String, dynamic>> userRegister(String name, String username,
     String email, String password, String phone) async {
@@ -96,29 +59,7 @@ Future<Map<String, dynamic>> userRegister(String name, String username,
         "phone": phone
       }),
       'POST');
-  // final response = await http.post(
-  //   Uri.parse(url),
-  //   headers: {'Content-Type': 'application/json'},
-  //   // body: json.encode({'email': email, 'password': password}),
-  //   body: json.encode({
-  //     "name": name,
-  //     "username": username,
-  //     "email": email,
-  //     "password": password,
-  //     "phone": phone
-  //   }),
-  // );
-  // if (response.statusCode == 200) {
-  //   return {'status': 'success', 'data': response.body};
-  // } else if (response.statusCode == 401) {
-  //   return {'status': 'error', 'message': 'access denied'};
-  // } else if (response.statusCode == 404) {
-  //   return {'status': 'error', 'message': 'data not found'};
-  // } else {
-  //   return {'status': 'error', 'message': 'Erreur lors de la requête'};
-  // }
-  // return sendRequest(url, {'Content-Type': 'application/json'}, body: body);
-}
+  }
 
 Future<Map<String, dynamic>> userLogin(String email, String password) async {
   final url = Utils.baseUrl + "users/login";
@@ -138,4 +79,9 @@ Future<Map<String, dynamic>> userLogin(String email, String password) async {
   } else {
     return {'status': 'error', 'message': 'Erreur lors de la requête'};
   }
+}
+
+Future<Map<String, dynamic>> userDestroy(String email) async {
+  String url = Utils.baseUrl + "users/" + email;
+  return sendRequest(url, {'Content-Type': 'application/json'}, 'DELETE');
 }

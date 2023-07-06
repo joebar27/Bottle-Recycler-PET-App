@@ -1,4 +1,6 @@
+import 'package:bottlerecyclerapp/components/CustomButton.dart';
 import 'package:bottlerecyclerapp/core/app_export.dart';
+import 'package:bottlerecyclerapp/data/apiClient/api_client.dart' as api;
 
 class ProfilUserScreen extends StatefulWidget {
   const ProfilUserScreen({Key? key}) : super(key: key);
@@ -30,6 +32,7 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
     setState(() {
       this.userData = userData['user'];
     });
+    print('setstate userdata: $userData');
     return userData;
   }
 
@@ -370,6 +373,19 @@ class _ProfilUserScreenState extends State<ProfilUserScreen> {
                   textAlign: TextAlign.center,
                   style: AppStyle.txtRobotoRegular12Lightgreen800,
                 ),
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              CustomButton.secondary(
+                text: "Supprimer le profile",
+                onPressed: () {
+                  var email = userData['email'];
+                  print(email);
+                  var userdestroy = api.userDestroy(email);
+                  secureStorage.deleteSecureData('userData');
+                  Navigator.pushNamed(context, AppRoutes.authScreen);
+                },
               ),
             ],
           ),

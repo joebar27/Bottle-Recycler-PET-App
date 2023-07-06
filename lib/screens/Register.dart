@@ -2,7 +2,6 @@ import 'package:bottlerecyclerapp/core/app_export.dart';
 import 'package:bottlerecyclerapp/components/CustomButton.dart';
 import 'package:bottlerecyclerapp/data/apiClient/api_client.dart' as api;
 
-
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -34,14 +33,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: ColorConstant.backgroundApp,
       appBar: AppBar(
         actions: [
-            IconButton(
-              onPressed: () {
-                secureStorage.deleteSecureData('userData');
-                Navigator.pushNamed(context, AppRoutes.authScreen);
-              },
-              icon: Icon(Icons.login),
-            ),
-          ],
+          IconButton(
+            onPressed: () {
+              secureStorage.deleteSecureData('userData');
+              Navigator.pushNamed(context, AppRoutes.authScreen);
+            },
+            icon: Icon(Icons.login),
+          ),
+        ],
         backgroundColor: Color.fromARGB(255, 71, 144, 14),
         title: Text('Bottle Recycler App'),
       ),
@@ -106,7 +105,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       }
                       return null;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Nom *',
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
@@ -133,7 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       }
                       return null;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Prénom *',
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
@@ -163,7 +162,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       }
                       return null;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'E-mail *',
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
@@ -200,16 +199,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           color: Colors.grey,
                         ),
                       ),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 0, horizontal: 16.0),
                       filled: true,
-                      fillColor: Color.fromARGB(51, 75, 194, 80),
-                      enabledBorder: OutlineInputBorder(
+                      fillColor: const Color.fromARGB(51, 75, 194, 80),
+                      enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
                             color: Color.fromARGB(255, 100, 160, 20)),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(color: Colors.red),
                       ),
@@ -240,16 +239,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           color: Colors.grey,
                         ),
                       ),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 0, horizontal: 16.0),
                       filled: true,
-                      fillColor: Color.fromARGB(51, 75, 194, 80),
-                      enabledBorder: OutlineInputBorder(
+                      fillColor: const Color.fromARGB(51, 75, 194, 80),
+                      enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
                             color: Color.fromARGB(255, 100, 160, 20)),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(color: Colors.red),
                       ),
@@ -260,15 +259,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: _phoneController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        _phoneController.text = 'non renseigné';
+                        _phoneController.text = '0123456789';
                         return null;
                       }
-                      if (value.isNotEmpty && !_phoneRegExp.hasMatch(value)) {
+                      if (value.isNotEmpty && !_phoneRegExp.hasMatch(value) ||
+                          value != 'non renseigné') {
                         return 'Veuillez saisir un numéro de téléphone valide';
                       }
                       return null;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Téléphone (facultatif)',
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
@@ -302,41 +302,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             !email.isEmpty &&
                             !password.isEmpty &&
                             !phone.isEmpty) {
-
+                          // ! Vérification si l'utilisateur existe déjà:
                           var userExiste = await api.userData(email);
-                          print('user data: ' + userExiste['status'].toString());
+                          print(
+                              'user data: ' + userExiste['status'].toString());
+                          // ! Si l'utilisateur existe déjà:
                           if (userExiste['status'] == 'success') {
-                            print('user existe');
+                            print('l\'user existe deja');
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text(
                                     'Un compte existe déjà avec cette adresse email'),
                                 backgroundColor: Colors.red,
                               ),
                             );
-                          } else {
-                            print('user n\'existe pas');
-                            var userRegister = await api.userRegister(name, username,
-                                email, password, phone);
-                            print('user data register: $userRegister');
-                            var secureStorage = SecureStorage();
-                            await secureStorage.writeSecureData(
-                                'userData', jsonEncode(userRegister));
-                            var storage = await secureStorage.readSecureData('userData');
-                            print('after user data register: $storage');
-                            // Navigator.pushNamed(
-                            //     context, AppRoutes.profilUserScreen);
                           }
-                          // var userData = await api.userRegister(name, username,
-                          //     email, password, phone);
-                          // print('user data register: $userData');
-                          // var secureStorage = SecureStorage();
-                          // await secureStorage.writeSecureData(
-                          //     'userData', jsonEncode(userData));
-                          // var storage = await secureStorage.readSecureData('userData');
-                          // print('after user data register: $storage');
-                          // Navigator.pushNamed(
-                          //     context, AppRoutes.profilUserScreen);
+                          // ! Si l'utilisateur n'existe pas:
+                          else {
+                            print('l\'user n\'existe pas');
+                            // ! Enregistrement de l'utilisateur en BDD:
+                            var userRegister = await api.userRegister(
+                                name, username, email, password, phone);
+                            print("l\'user enregister BDD: $userRegister");
+                            // ! Si l'enregistrement est un succès:
+                            if (userRegister['status'] == 'success') {
+                              var userData = userRegister['data'];
+                              print("enregistrer avec success : $userData");
+                              secureStorage.writeSecureData(
+                                  'userData', userData);
+                              print("bla bla bla");
+                              print(secureStorage
+                                  .readSecureData('userData')
+                                  .toString());
+                            }
+                          }
+                          Navigator.pushNamed(
+                              context, AppRoutes.profilUserScreen);
                         }
                       }
                     },
