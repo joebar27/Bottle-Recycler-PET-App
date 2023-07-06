@@ -1,4 +1,5 @@
 {
     "cSpell.language": "fr,fr-FR",
-    "cSpell.words": ["width"]
+    "cSpell.words": ["width"],
+    "cmake.configureOnOpen": true
 }

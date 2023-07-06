@@ -5,6 +5,7 @@ export 'package:bottlerecyclerapp/theme/app_style.dart';
 export 'package:bottlerecyclerapp/routes/app_routes.dart';
 //! Widget :
 export 'package:bottlerecyclerapp/widget/custom_image_view.dart';
+export '../components/CustomDrawer.dart';
 //! utils :
 export 'package:bottlerecyclerapp/core/utils/image_constant.dart';
 export 'package:bottlerecyclerapp/core/utils/color_constant.dart';
