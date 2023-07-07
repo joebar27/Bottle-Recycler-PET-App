@@ -44,7 +44,7 @@ class _ExpertFormState extends State<ExpertForm> {
           CustomButton.primary(
             text: 'Lancer l\'extrusion',
             onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.tutoDebutantScreen);
+              Navigator.pushNamed(context, AppRoutes.extrudeActiveScreen);
             },
           ),
         ],

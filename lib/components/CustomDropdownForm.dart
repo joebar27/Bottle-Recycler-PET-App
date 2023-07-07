@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-class CustomDropdown extends StatefulWidget {
+class CustomDropdownForm extends StatefulWidget {
   final List<String> options;
   final String? selectedOption;
   final ValueChanged<String?>? onChanged;
 
-  const CustomDropdown({
+  const CustomDropdownForm({
     required this.options,
     this.selectedOption,
     this.onChanged,
   });
 
   @override
-  _CustomDropdownState createState() => _CustomDropdownState();
+  _CustomDropdownFormState createState() => _CustomDropdownFormState();
 }
 
-class _CustomDropdownState extends State<CustomDropdown> {
+class _CustomDropdownFormState extends State<CustomDropdownForm> {
   String? _selectedOption;
 
   @override
@@ -27,8 +27,8 @@ class _CustomDropdownState extends State<CustomDropdown> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.35,
-      height: 35,
+      width: MediaQuery.of(context).size.width - 32,
+      height: 40,
       child: DropdownButtonFormField<String>(
         value: _selectedOption,
         onChanged: (String? newValue) {
@@ -42,18 +42,18 @@ class _CustomDropdownState extends State<CustomDropdown> {
         },
         decoration: InputDecoration(
           filled: true,
-          fillColor: Color.fromARGB(51, 75, 194, 80),
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+          fillColor: const Color.fromARGB(51, 75, 194, 80),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: Color.fromARGB(255, 206, 35, 35),
+            borderSide: const BorderSide(
+              color: const Color.fromARGB(255, 206, 35, 35),
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: Color.fromARGB(255, 100, 160, 20),
+            borderSide: const BorderSide(
+              color: const Color.fromARGB(255, 100, 160, 20),
             ),
           ),
         ),
