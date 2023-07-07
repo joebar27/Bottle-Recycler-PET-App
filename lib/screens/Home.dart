@@ -3,6 +3,9 @@ import 'package:bottlerecyclerapp/components/CustomDropdown.dart';
 import 'package:bottlerecyclerapp/components/CustomFields.dart';
 import 'package:bottlerecyclerapp/components/CustomButton.dart';
 
+import '../components/ExpertForm.dart';
+import '../components/NoviceForm.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -15,6 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String jsonStringData = '';
   Map<String, dynamic> userData = {};
+
+  String dropdownValue = 'Novice';
 
   @override
   void initState() {
@@ -74,37 +79,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   options: ['Novice', 'Expert'],
                   selectedOption: 'Novice',
                   onChanged: (String? newValue) {
-                    if (newValue != null) print(newValue);
-                    // Traiter la nouvelle option sélectionnée ici
+                    if (newValue != null) {
+                      setState(() {
+                        dropdownValue = newValue;
+                      });
+                    }
                   },
                 ),
               ]),
               const SizedBox(height: 20.0),
-              Form(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CustomTextFormField(labelText: 'Type de bouteille', obscureText: false,),
-                    const SizedBox(height: 12.0),
-                    CustomTextFormField(labelText: 'Largeur de bande en mm', obscureText: false,),
-                    const SizedBox(height: 12.0),
-                    CustomTextFormField(labelText: 'Vitesse d\'extrusion en mm/s', obscureText: false,),
-                    const SizedBox(height: 12.0),
-                    CustomTextFormField(
-                        labelText: 'Température d\'extrusion en \°C', obscureText: false,),
-                    const SizedBox(height: 12.0),
-                    CustomTextFormField(labelText: 'Ventilation en %', obscureText: false,),
-                    const SizedBox(height: 12.0),
-                    const SizedBox(height: 20.0),
-                    CustomButton.primary(
-                      text: 'Lancer l\'extrusion',
-                      onPressed: () {
-                        Navigator.pushNamed(context, AppRoutes.tutoDebutantScreen);
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              if (dropdownValue == 'Expert') 
+                // Formulaire pour 'Expert'
+                ExpertForm()
+              else 
+                // Formulaire pour 'Novice'
+                NoviceForm(),
+              
             ],
           ),
         ),
