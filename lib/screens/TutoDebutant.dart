@@ -1,3 +1,4 @@
+import '../components/CustomAppBar.dart';
 import '../core/app_export.dart';
 
 class TutoDebutantScreen extends StatefulWidget {
@@ -15,20 +16,25 @@ class _TutoDebutantScreenState extends State<TutoDebutantScreen> {
   @override
   void initState() {
     super.initState();
-    getUserDataFromSecureStorage();
+    // getUserDataFromSecureStorage();
   }
 
   Future<Map<String, dynamic>> getUserDataFromSecureStorage() async {
     jsonStringData =
         await secureStorage.readSecureData('userData') ?? 'No data found';
     if (jsonStringData != 'No data found') {
+      try {
       userData = jsonDecode(jsonStringData);
       print('getUser: $userData');
+      if (userData != null) {
+        setState(() {
+          this.userData = userData['user'];
+        });
+      }
+    } catch (e) {
+      print('Failed to parse user data: $e');
     }
-
-    setState(() {
-      this.userData = userData['user'];
-    });
+  }
     return userData;
   }
 
@@ -36,19 +42,10 @@ class _TutoDebutantScreenState extends State<TutoDebutantScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              onPressed: () {
-                secureStorage.deleteSecureData('userData');
-                Navigator.pushNamed(context, AppRoutes.authScreen);
-              },
-              icon: Icon(Icons.login),
-            ),
-          ],
-          backgroundColor: Color.fromARGB(255, 71, 144, 14),
-          title: Text('Bottle Recycler App'),
-        ),
+        appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50.0), // change this size as per your need
+        child: CustomAppBar(),
+      ),          
         drawer: CustomDrawer(),
         backgroundColor: ColorConstant.backgroundApp,
         body: SizedBox(

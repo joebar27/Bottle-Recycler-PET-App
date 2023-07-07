@@ -59,40 +59,45 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
             child: Column(
               children: <Widget>[
-                ListTile(
-                  minVerticalPadding: 20,
-                  style: ListTileStyle.drawer,
-                  leading: Icon(Icons.home, color: Colors.white),
-                  title: Text(
-                    'Extrusion',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pushNamed(context, AppRoutes.homeScreen);
-                  },
-                ),
                 FutureBuilder<String?>(
                   future: userData,
                   builder:
                       (BuildContext context, AsyncSnapshot<String?> snapshot) {
                     if (snapshot.hasData && snapshot.data != '') {
-                      return ListTile(
-                        leading: Icon(
-                          Icons.account_circle,
-                          color: Colors.white,
-                        ),
-                        title: Text('Profil',
-                            style: TextStyle(
+                      return Column(
+                        children: <Widget>[
+                          ListTile(
+                            minVerticalPadding: 20,
+                            style: ListTileStyle.drawer,
+                            leading: Icon(Icons.home, color: Colors.white),
+                            title: Text(
+                              'Extrusion',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.homeScreen);
+                            },
+                          ),
+                          ListTile(
+                            leading: Icon(
+                              Icons.account_circle,
                               color: Colors.white,
-                              fontSize: 24,
-                            )),
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, AppRoutes.profilUserScreen);
-                        },
+                            ),
+                            title: Text('Profil',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                )),
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.profilUserScreen);
+                            },
+                          )
+                        ],
                       );
                     } else {
                       return Container(); // retourne un conteneur vide si les conditions ne sont pas remplies

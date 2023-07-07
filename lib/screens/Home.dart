@@ -24,8 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<Map<String, dynamic>> getUserDataFromSecureStorage() async {
     jsonStringData =
-        await secureStorage.readSecureData('userData') ?? 'No data found';
-    if (jsonStringData != 'No data found') {
+        await secureStorage.readSecureData('userData') ?? 'Aucun utilisateur trouvé avec cet email';
+    if (jsonStringData != 'Aucun utilisateur trouvé avec cet email') {
       userData = jsonDecode(jsonStringData);
       print('getUser: $userData');
     }

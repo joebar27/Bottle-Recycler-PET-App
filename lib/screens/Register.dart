@@ -259,11 +259,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: _phoneController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        _phoneController.text = '0123456789';
+                        _phoneController.text = 'NC';
                         return null;
                       }
                       if (value.isNotEmpty && !_phoneRegExp.hasMatch(value) ||
-                          value != 'non renseigné') {
+                          value != 'NC') {
                         return 'Veuillez saisir un numéro de téléphone valide';
                       }
                       return null;
